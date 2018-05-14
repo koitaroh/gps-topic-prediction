@@ -1,0 +1,9 @@
+.idea/
+src/config.cfg
+*.cfg
+*.pyc
+*.log*
+*\.DS_Store
+data/interim/*
+data/raw/*
+data/output/*
