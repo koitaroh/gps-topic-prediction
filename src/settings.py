@@ -34,8 +34,8 @@ SLACK_TOKEN = conf.get('Slack', 'token')
 sc = SlackClient(SLACK_TOKEN)
 
 ######
-EXPERIMENT_ENVIRONMENT = "local"
-# EXPERIMENT_ENVIRONMENT = "remote"
+# EXPERIMENT_ENVIRONMENT = "local"
+EXPERIMENT_ENVIRONMENT = "remote"
 ######
 
 ## Local
