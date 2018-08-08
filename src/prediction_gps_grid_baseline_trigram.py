@@ -62,7 +62,6 @@ def define_dictionary():
 
 
 
-
 if __name__ == '__main__':
     slack_client = s.sc
     EXPERIMENT_PARAMETERS = s.EXPERIMENT_PARAMETERS
@@ -82,7 +81,7 @@ if __name__ == '__main__':
     GEOJSON_FILE_TRUE_GRID = s.GEOJSON_FILE_TRUE_GRID
     GEOJSON_FILE_PREDICTED_LSTM_GRID = s.GEOJSON_FILE_PREDICTED_LSTM_GRID
 
-
+    define_dictionary()
 
     # Make notification
     slack_client.api_call("chat.postMessage", channel="#experiment", text=__file__+" is finished.")

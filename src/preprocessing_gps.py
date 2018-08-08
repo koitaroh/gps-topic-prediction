@@ -24,7 +24,7 @@ import logging
 from logging import handlers
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
-fh = logging.handlers.RotatingFileHandler('../docs/log.log', maxBytes=1000000, backupCount=3)  # file handler
+fh = logging.handlers.RotatingFileHandler('log.log', maxBytes=1000000, backupCount=3)  # file handler
 fh.setLevel(logging.DEBUG)
 ch = logging.StreamHandler()  # console handler
 ch.setLevel(logging.INFO)
