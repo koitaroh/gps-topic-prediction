@@ -27,15 +27,15 @@ logger.info('Initializing %s', __name__)
 # # Database configuration
 conf = configparser.ConfigParser()
 src_dir = Path(__file__).parent.resolve()
-print(src_dir)
+# print(f'Checking the new pathlib: {src_dir}')
 conf_file = src_dir / "config.cfg"
 conf.read(conf_file)
 SLACK_TOKEN = conf.get('Slack', 'token')
 sc = SlackClient(SLACK_TOKEN)
 
 ######
-# EXPERIMENT_ENVIRONMENT = "local"
-EXPERIMENT_ENVIRONMENT = "remote"
+EXPERIMENT_ENVIRONMENT = "local"
+# EXPERIMENT_ENVIRONMENT = "remote"
 ######
 
 ## Local
@@ -70,8 +70,15 @@ if EXPERIMENT_ENVIRONMENT == "local":
         'VISUALIZATION_CSV_SAMPLE_SIZE': 500,  # Sample size for visualization
     }
 
-    # EXPERIMENT_DIR = "/Users/koitaroh/Documents/Data/Experiments/" + EXPERIMENT_PARAMETERS["EXPERIMENT_NAME"] + "/"
-    EXPERIMENT_DIR = Path("/Users/koitaroh/Documents/Data/Experiments/") / EXPERIMENT_PARAMETERS["EXPERIMENT_NAME"]
+    # EXPERIMENT_DIR = Path("/Users/koitaroh/Documents/Data/Experiments/") / EXPERIMENT_PARAMETERS["EXPERIMENT_NAME"]
+    EXPERIMENT_DIR = src_dir.parent / "data/output/" / EXPERIMENT_PARAMETERS["EXPERIMENT_NAME"]
+
+    # DATA_EXTERNAL_DIR = src_dir.parent / "data/external"
+    # DATA_INTERIM_DIR = src_dir.parent / "data/interim"
+    # DATA_PROCESSED_DIR = src_dir.parent / "data/processed"
+    # DATA_RAW_DIR = src_dir.parent / "data/raw"
+    # RESULTS_DIR = src_dir.parent / "results/"
+
 
     if EXPERIMENT_PARAMETERS["INPUT_DATASET"] == "ZDC":
         DATA_DIR = Path("/Users/koitaroh/Documents/Data/GPS/2012/")
@@ -145,6 +152,14 @@ if EXPERIMENT_ENVIRONMENT == "remote":
 
     # DATA_DIR = "/data/zdc/2013/MOD_ATF_ITSMONAVI/2013/"
 
+
+    # DATA_DIR = Path('/data/miyazawa/habitat/data')
+    # DATA_EXTERNAL_DIR = DATA_DIR / "external"
+    # DATA_INTERIM_DIR = DATA_DIR / "interim"
+    # DATA_PROCESSED_DIR = DATA_DIR / "processed"
+    # DATA_RAW_DIR = DATA_DIR / "raw"
+    # RESULTS_DIR = src_dir.parent / "results/"
+
     import tensorflow as tf
     from keras.backend.tensorflow_backend import set_session
     config = tf.ConfigProto()
@@ -181,20 +196,13 @@ EVALUATION_DIR = OUTPUT_DIR + "evaluation/"
 logger.info("EXPERIMENT_NAME: %s", EXPERIMENT_PARAMETERS["EXPERIMENT_NAME"])
 logger.info("EXPERIMENT_DIR: %s", EXPERIMENT_DIR)
 logger.info("EXPERIMENT PARAMETERS: %s" % EXPERIMENT_PARAMETERS)
-if not os.path.exists(DATA_DIR_PROCESSED):
-    os.makedirs(DATA_DIR_PROCESSED)
-if not os.path.exists(DATA_DIR_INTERIM):
-    os.makedirs(DATA_DIR_INTERIM)
-if not os.path.exists(OUTPUT_DIR):
-    os.makedirs(OUTPUT_DIR)
-if not os.path.exists(EXPERIMENT_DIR):
-    os.makedirs(EXPERIMENT_DIR)
-if not os.path.exists(FIGURE_DIR):
-    os.makedirs(FIGURE_DIR)
-if not os.path.exists(TRAINING_DIR):
-    os.makedirs(TRAINING_DIR)
-if not os.path.exists(EVALUATION_DIR):
-    os.makedirs(EVALUATION_DIR)
+if not os.path.exists(DATA_DIR_PROCESSED): os.makedirs(DATA_DIR_PROCESSED)
+if not os.path.exists(DATA_DIR_INTERIM): os.makedirs(DATA_DIR_INTERIM)
+if not os.path.exists(OUTPUT_DIR): os.makedirs(OUTPUT_DIR)
+if not os.path.exists(EXPERIMENT_DIR): os.makedirs(EXPERIMENT_DIR)
+if not os.path.exists(FIGURE_DIR): os.makedirs(FIGURE_DIR)
+if not os.path.exists(TRAINING_DIR): os.makedirs(TRAINING_DIR)
+if not os.path.exists(EVALUATION_DIR): os.makedirs(EVALUATION_DIR)
 
 ### File location for city-scale prediction
 TEMPORAL_DATAFRAME = DATA_DIR_INTERIM + "dataframe.h5"
@@ -265,6 +273,21 @@ DOC2VEC_TOPIC_EVALUATION_FILE = DATA_DIR_PROCESSED + "Topic_Feature_evaluation_D
 DICT_FILE = DATA_DIR_INTERIM + "corpus.dict"
 MM_CORPUS_FILE = DATA_DIR_INTERIM + "corpus.mm"
 TFIDF_FILE = DATA_DIR_INTERIM + "tfidf.tfidf"
+
+
+# TEMPORAL_DATAFRAME = DATA_DIR / "interim/temp.h5"
+#
+# ZDC_RAW_DIR = DATA_DIR / "raw/zdc_raw/"
+# ZDC_FILTERED_DIR = DATA_DIR / "processed/zdc_filtered/"
+# ZDC_FILTERED_FILL5MINS_DIR = DATA_DIR / "processed/zdc_5mins_fill/"
+# ZDC_FILTERED_DIR_1 = DATA_DIR / "processed/zdc_stay_1/"
+# ZDC_FILTERED_DIR_2 = DATA_DIR / "processed/zdc_stay_2/"
+# ZDC_FILTERED_DIR_3 = DATA_DIR / "processed/zdc_stay_3/"
+# ZDC_FILTERED_DIR_4 = DATA_DIR / "processed/zdc_stay_4/"
+# ZDC_STAYPOINT_STAT_FILE = DATA_DIR / "raw/staypoint_stat.csv"
+# ZDC_FILTERED_FILE = DATA_DIR / "processed/zdc_filtered.csv"
+# ZDC_DECK_FILE = DATA_DIR / "processed/zdc_deck.json"
+# JAPAN_CITY_FILE = DATA_DIR / "raw/japan_city.pkl"
 
 
 def exit_handler(finename):
