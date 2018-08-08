@@ -17,3 +17,4 @@ geojson
 dropbox
 matplotlib
 pyemd
+nltk
