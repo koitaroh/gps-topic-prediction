@@ -308,7 +308,7 @@ def create_geojson_line_from_dataframe(df, outfile, EXPERIMENT_PARAMETERS):
 
 if __name__ == '__main__':
     slack_client = s.sc
-    DATA_DIR = s.DATA_DIR
+    GPS_RAW_DIR = s.GPS_RAW_DIR
     GPS_INTERPOLATED_FILTERED = s.GPS_INTERPOLATED_FILTERED
     EXPERIMENT_PARAMETERS = s.EXPERIMENT_PARAMETERS
 
@@ -334,7 +334,7 @@ if __name__ == '__main__':
     temporal_index = utility_spatiotemporal_index.define_temporal_index_evaluation(EXPERIMENT_PARAMETERS)
     topic_array = np.load(LSI_TOPIC_EVALUATION_FILE)
 
-    df_all_users = load_csv_files_to_dataframe_evaluation(DATA_DIR, EXPERIMENT_PARAMETERS)
+    df_all_users = load_csv_files_to_dataframe_evaluation(GPS_RAW_DIR, EXPERIMENT_PARAMETERS)
     df_user_filtered = filter_users_with_experiment_setting(df_all_users, EXPERIMENT_PARAMETERS)
 
     df_user_filtered.to_hdf(TEMPORAL_DATAFRAME, "df_all_users")

@@ -210,7 +210,7 @@ def convert_dataframe_to_coordinate_mode_and_grid_mode_topic_sequences(df: pd.Da
 
 if __name__ == '__main__':
     slack_client = s.sc
-    DATA_DIR = s.DATA_DIR
+    GPS_RAW_DIR = s.GPS_RAW_DIR
     GPS_INTERPOLATED_FILTERED = s.GPS_INTERPOLATED_FILTERED
     EXPERIMENT_PARAMETERS = s.EXPERIMENT_PARAMETERS
 
@@ -235,7 +235,7 @@ if __name__ == '__main__':
     topic_array = np.load(LSI_TOPIC_FILE)
 
     # Load CSV files
-    df_all_users = utility_io.load_csv_files_to_dataframe(DATA_DIR, EXPERIMENT_PARAMETERS)
+    df_all_users = utility_io.load_csv_files_to_dataframe(GPS_RAW_DIR, EXPERIMENT_PARAMETERS)
     df_user_filtered = filter_users_with_experiment_setting(df_all_users, EXPERIMENT_PARAMETERS)
     # df_user_filtered.to_hdf(TEMPORAL_DATAFRAME, "df_all_users")
 
