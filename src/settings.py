@@ -80,16 +80,15 @@ if EXPERIMENT_ENVIRONMENT == "local":
     # RESULTS_DIR = src_dir.parent / "results/"
 
 
-    if EXPERIMENT_PARAMETERS["INPUT_DATASET"] == "ZDC":
-        DATA_DIR = Path("/Users/koitaroh/Documents/Data/GPS/2012/")
-    elif EXPERIMENT_PARAMETERS["INPUT_DATASET"] == "Interpolated":
-        DATA_DIR = Path("/Users/koitaroh/Documents/Data/GPS/gps_trip_result_kanto_201207/")
-
-    GPS_DIR_PROCESSED = Path("/Users/koitaroh/Documents/Data/GPS/zdc_filtered/")
-    GPS_FILTERED = GPS_DIR_PROCESSED / ("filtered_" + EXPERIMENT_PARAMETERS["EXPERIMENT_NAME"] + ".csv")
-    GPS_INTERPOLATED_FILTERED = GPS_DIR_PROCESSED / ("filtered_interpolated_" + EXPERIMENT_PARAMETERS["EXPERIMENT_NAME"] + ".csv")
-    GPS_INTERPOLATED_FILTERED_EVALUATION = GPS_DIR_PROCESSED / ("filtered_interpolated_evaluation_" + EXPERIMENT_PARAMETERS["EXPERIMENT_NAME"] + ".csv")
-    # TRANSFER_CSV_FILTERED = EXPERIMENT_DIR + "transfer_filtered.csv"
+    # if EXPERIMENT_PARAMETERS["INPUT_DATASET"] == "ZDC":
+    #     DATA_DIR = Path("/Users/koitaroh/Documents/Data/GPS/2012/")
+    # elif EXPERIMENT_PARAMETERS["INPUT_DATASET"] == "Interpolated":
+    #     DATA_DIR = Path("/Users/koitaroh/Documents/Data/GPS/gps_trip_result_kanto_201207/")
+    # GPS_DIR_PROCESSED = Path("/Users/koitaroh/Documents/Data/GPS/zdc_filtered/")
+    # GPS_FILTERED = GPS_DIR_PROCESSED / ("filtered_" + EXPERIMENT_PARAMETERS["EXPERIMENT_NAME"] + ".csv")
+    # GPS_INTERPOLATED_FILTERED = GPS_DIR_PROCESSED / ("filtered_interpolated_" + EXPERIMENT_PARAMETERS["EXPERIMENT_NAME"] + ".csv")
+    # GPS_INTERPOLATED_FILTERED_EVALUATION = GPS_DIR_PROCESSED / ("filtered_interpolated_evaluation_" + EXPERIMENT_PARAMETERS["EXPERIMENT_NAME"] + ".csv")
+    # # TRANSFER_CSV_FILTERED = EXPERIMENT_DIR + "transfer_filtered.csv"
     TEST_DB_TABLE_NAME = "gps_log_2"
 
     # STOPLIST_FILE = "../data/processed/stoplist_jp.txt"
@@ -188,6 +187,17 @@ DATA_DIR_RAW = "../data/raw/"
 DATA_DIR_PROCESSED = "../data/processed/"
 DATA_DIR_INTERIM = "../data/interim/"
 OUTPUT_DIR = "../data/output/" + EXPERIMENT_PARAMETERS["EXPERIMENT_NAME"] + "/"
+
+if EXPERIMENT_PARAMETERS["INPUT_DATASET"] == "ZDC":
+    GPS_RAW_DIR = DATA_DIR_RAW + "2012/"
+elif EXPERIMENT_PARAMETERS["INPUT_DATASET"] == "Interpolated":
+    GPS_RAW_DIR = DATA_DIR_RAW + "gps_trip_result_kanto_201207/"
+
+GPS_FILTERED = DATA_DIR_PROCESSED + ("filtered_" + EXPERIMENT_PARAMETERS["EXPERIMENT_NAME"] + ".csv")
+GPS_INTERPOLATED_FILTERED = DATA_DIR_PROCESSED + ("filtered_interpolated_" + EXPERIMENT_PARAMETERS["EXPERIMENT_NAME"] + ".csv")
+GPS_INTERPOLATED_FILTERED_EVALUATION = DATA_DIR_PROCESSED + ("filtered_interpolated_evaluation_" + EXPERIMENT_PARAMETERS["EXPERIMENT_NAME"] + ".csv")
+# TRANSFER_CSV_FILTERED = EXPERIMENT_DIR + "transfer_filtered.csv"
+
 
 FIGURE_DIR = OUTPUT_DIR + "figures/"
 TRAINING_DIR = OUTPUT_DIR + "training/"
