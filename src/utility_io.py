@@ -84,6 +84,29 @@ def load_csv_files_to_dataframe(DATA_DIR, EXPERIMENT_PARAMETERS):
     return df_raw_all
 
 
+def load_csv_files_to_dataframe_evaluation(DATA_DIR, EXPERIMENT_PARAMETERS):
+    timestart = datetime.strptime(EXPERIMENT_PARAMETERS['EVALUATION_OBSERVATION_START'], '%Y-%m-%d %H:%M:%S')
+    timeend = datetime.strptime(EXPERIMENT_PARAMETERS['EVALUATION_PREDICTION_END'], '%Y-%m-%d %H:%M:%S')
+    logger.info("Evaluation time span: %s to %s" % (timestart, timeend))
+    days = (timeend - timestart).days
+    prediction_days = days + 1
+    df_raw_all = pd.DataFrame(np.empty(0, dtype=[('uid', 'str'), ('time_start', 'str'), ('time_end', 'str'), ('x', 'float64'), ('y', 'float64'), ('mode', 'str')]))
+    num_user_all = 0
+    for root, dirs, files in os.walk(DATA_DIR):
+        files.sort()
+        for fn in files:
+            if fn[0] != '.':
+                csv_file = root + "/" + fn
+                df, num_user = load_csv_to_dataframe(csv_file, EXPERIMENT_PARAMETERS)
+                df_raw_all = df_raw_all.append(df)
+                num_user_all += num_user
+                logger.info("Current number of user: %s" % num_user_all)
+                if EXPERIMENT_PARAMETERS['SAMPLE_USER_SIZE'] * 2 < num_user_all:
+                    break
+    # df_raw_all = df_raw_all.sort_values(by=['uid', 'time_start'])
+    return df_raw_all
+
+
 def load_csv_to_dataframe(CSV_FILE, EXPERIMENT_PARAMETERS):
     logger.info("Loading CSV %s to dataframe" % CSV_FILE)
     headers = ['uid', 'time_start', 'time_end', 'x', "y", "mode"]
