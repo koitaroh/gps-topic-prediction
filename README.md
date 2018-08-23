@@ -57,7 +57,8 @@ Refered Keras docker build.
 3. Run experiment (training and evaluation)
     1. Training
         1. Run `prediction_gps_grid_mode_topic.py` for main model.
-        2. Run `prediction_gps_grid_baseline.py` for runnning baseline models.
+        2. Run `prediction_gps_grid_baseline_ngram.py` for runnning ngram baseline model.
+        3. RUN `prediction_gps_grid_baseline_rnn.py` for running RNN baseline model.
     2. Evaluation
         1. Run `evaluate_prediction.py`
             - Evaluate prediction with Loss
