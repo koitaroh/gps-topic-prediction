@@ -204,7 +204,7 @@ def training_lstm_grid(X_train, y_train, X_test, y_test, X_mode_train, X_mode_te
     plt.ylabel('loss')
     plt.xlabel('epoch')
     plt.legend(['train', 'test'], loc='upper left')
-    plt.savefig(FIGURE_DIR + "accuracy_sparse_categorical_crossentropy.png")
+    plt.savefig(FIGURE_DIR / "accuracy_sparse_categorical_crossentropy.png")
     plt.close()
 
     logger.info("sparse_categorical_accuracy: %s" % accuracy)
@@ -214,7 +214,7 @@ def training_lstm_grid(X_train, y_train, X_test, y_test, X_mode_train, X_mode_te
     plt.ylabel('accuracy')
     plt.xlabel('epoch')
     plt.legend(['train', 'test'], loc='upper left')
-    plt.savefig(FIGURE_DIR + "accuracy_acc.png")
+    plt.savefig(FIGURE_DIR / "accuracy_acc.png")
     plt.close()
     return model
 
