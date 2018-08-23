@@ -183,25 +183,27 @@ CITYEMD_DISTANCE_MATRIX_FILE = "../data/processed/cityemd_distance_matrix.npy"
 LB_MODE_CLASSES_FILE = "../data/processed/lb_mode_classes.npy"
 LE_GRID_CLASSES_FILE = "../data/processed/le_grid_classes.npy"
 
-DATA_DIR_RAW = "../data/raw/"
-DATA_DIR_PROCESSED = "../data/processed/"
-DATA_DIR_INTERIM = "../data/interim/"
-OUTPUT_DIR = "../data/output/" + EXPERIMENT_PARAMETERS["EXPERIMENT_NAME"] + "/"
+# EXPERIMENT_DIR = src_dir.parent / "data/output/" / EXPERIMENT_PARAMETERS["EXPERIMENT_NAME"]
+
+DATA_DIR_RAW = src_dir.parent / "data/raw/"
+DATA_DIR_PROCESSED = src_dir.parent / "data/processed/"
+DATA_DIR_INTERIM = src_dir.parent / "data/interim/"
+OUTPUT_DIR = src_dir.parent / "data/output/" / EXPERIMENT_PARAMETERS["EXPERIMENT_NAME"]
 
 if EXPERIMENT_PARAMETERS["INPUT_DATASET"] == "ZDC":
-    GPS_RAW_DIR = DATA_DIR_RAW + "2012/"
+    GPS_RAW_DIR = DATA_DIR_RAW / "2012/"
 elif EXPERIMENT_PARAMETERS["INPUT_DATASET"] == "Interpolated":
-    GPS_RAW_DIR = DATA_DIR_RAW + "gps_trip_result_kanto_201207/"
+    GPS_RAW_DIR = DATA_DIR_RAW / "gps_trip_result_kanto_201207/"
 
-GPS_FILTERED = DATA_DIR_PROCESSED + ("filtered_" + EXPERIMENT_PARAMETERS["EXPERIMENT_NAME"] + ".csv")
-GPS_INTERPOLATED_FILTERED = DATA_DIR_PROCESSED + ("filtered_interpolated_" + EXPERIMENT_PARAMETERS["EXPERIMENT_NAME"] + ".csv")
-GPS_INTERPOLATED_FILTERED_EVALUATION = DATA_DIR_PROCESSED + ("filtered_interpolated_evaluation_" + EXPERIMENT_PARAMETERS["EXPERIMENT_NAME"] + ".csv")
+GPS_FILTERED = DATA_DIR_PROCESSED / ("filtered_" + EXPERIMENT_PARAMETERS["EXPERIMENT_NAME"] + ".csv")
+GPS_INTERPOLATED_FILTERED = DATA_DIR_PROCESSED / ("filtered_interpolated_" + EXPERIMENT_PARAMETERS["EXPERIMENT_NAME"] + ".csv")
+GPS_INTERPOLATED_FILTERED_EVALUATION = DATA_DIR_PROCESSED / ("filtered_interpolated_evaluation_" + EXPERIMENT_PARAMETERS["EXPERIMENT_NAME"] + ".csv")
 # TRANSFER_CSV_FILTERED = EXPERIMENT_DIR + "transfer_filtered.csv"
 
 
-FIGURE_DIR = OUTPUT_DIR + "figures/"
-TRAINING_DIR = OUTPUT_DIR + "training/"
-EVALUATION_DIR = OUTPUT_DIR + "evaluation/"
+FIGURE_DIR = OUTPUT_DIR / "figures/"
+TRAINING_DIR = OUTPUT_DIR / "training/"
+EVALUATION_DIR = OUTPUT_DIR / "evaluation/"
 
 logger.info("EXPERIMENT_NAME: %s", EXPERIMENT_PARAMETERS["EXPERIMENT_NAME"])
 logger.info("EXPERIMENT_DIR: %s", EXPERIMENT_DIR)
@@ -215,74 +217,74 @@ if not os.path.exists(TRAINING_DIR): os.makedirs(TRAINING_DIR)
 if not os.path.exists(EVALUATION_DIR): os.makedirs(EVALUATION_DIR)
 
 ### File location for city-scale prediction
-TEMPORAL_DATAFRAME = DATA_DIR_INTERIM + "dataframe.h5"
+TEMPORAL_DATAFRAME = DATA_DIR_INTERIM / "dataframe.h5"
 
-X_COORDINATE_FILE = DATA_DIR_INTERIM + "x_coordinate.npy"
-Y_COORDINATE_FILE = DATA_DIR_INTERIM + "y_coordinate.npy"
-X_MODE_FILE = DATA_DIR_INTERIM + "x_mode.npy"
-X_GRID_FILE = DATA_DIR_INTERIM + "x_grid.npy"
-Y_GRID_FILE = DATA_DIR_INTERIM + "y_grid.npy"
-Y_MODE_FILE = DATA_DIR_INTERIM + "y_mode.npy"
-X_TOPIC_FILE = DATA_DIR_INTERIM + "x_topic.npy"
-Y_TOPIC_FILE = DATA_DIR_INTERIM + "y_topic.npy"
+X_COORDINATE_FILE = DATA_DIR_INTERIM / "x_coordinate.npy"
+Y_COORDINATE_FILE = DATA_DIR_INTERIM / "y_coordinate.npy"
+X_MODE_FILE = DATA_DIR_INTERIM / "x_mode.npy"
+X_GRID_FILE = DATA_DIR_INTERIM / "x_grid.npy"
+Y_GRID_FILE = DATA_DIR_INTERIM / "y_grid.npy"
+Y_MODE_FILE = DATA_DIR_INTERIM / "y_mode.npy"
+X_TOPIC_FILE = DATA_DIR_INTERIM / "x_topic.npy"
+Y_TOPIC_FILE = DATA_DIR_INTERIM / "y_topic.npy"
 
-X_COORDINATE_EVALUATION_FILE = DATA_DIR_INTERIM + "evaluation_x_coordinate.npy"
-Y_COORDINATE_EVALUATION_FILE = DATA_DIR_INTERIM + "evaluation_y_coordinate.npy"
-X_MODE_EVALUATION_FILE = DATA_DIR_INTERIM + "evaluation_x_mode.npy"
-X_GRID_EVALUATION_FILE = DATA_DIR_INTERIM + "evaluation_x_grid.npy"
-Y_GRID_EVALUATION_FILE = DATA_DIR_INTERIM + "evaluation_y_grid.npy"
-Y_MODE_EVALUATION_FILE = DATA_DIR_INTERIM + "evaluation_y_mode.npy"
-X_TOPIC_EVALUATION_FILE = DATA_DIR_INTERIM + "evaluation_x_topic.npy"
-Y_TOPIC_EVALUATION_FILE = DATA_DIR_INTERIM + "evaluation_y_topic.npy"
+X_COORDINATE_EVALUATION_FILE = DATA_DIR_INTERIM / "evaluation_x_coordinate.npy"
+Y_COORDINATE_EVALUATION_FILE = DATA_DIR_INTERIM / "evaluation_y_coordinate.npy"
+X_MODE_EVALUATION_FILE = DATA_DIR_INTERIM / "evaluation_x_mode.npy"
+X_GRID_EVALUATION_FILE = DATA_DIR_INTERIM / "evaluation_x_grid.npy"
+Y_GRID_EVALUATION_FILE = DATA_DIR_INTERIM / "evaluation_y_grid.npy"
+Y_MODE_EVALUATION_FILE = DATA_DIR_INTERIM / "evaluation_y_mode.npy"
+X_TOPIC_EVALUATION_FILE = DATA_DIR_INTERIM / "evaluation_x_topic.npy"
+Y_TOPIC_EVALUATION_FILE = DATA_DIR_INTERIM / "evaluation_y_topic.npy"
 
-X_FILE = DATA_DIR_INTERIM + "x.npy"
-Y_FILE = DATA_DIR_INTERIM + "y.npy"
-Y_FILE_PREDICTED_LSTM = DATA_DIR_INTERIM + "y_predicted_lstm.npy"
-Y_FILE_PREDICTED_VELOCITY = DATA_DIR_INTERIM + "y_predicted_laststep.npy"
+X_FILE = DATA_DIR_INTERIM / "x.npy"
+Y_FILE = DATA_DIR_INTERIM / "y.npy"
+Y_FILE_PREDICTED_LSTM = DATA_DIR_INTERIM / "y_predicted_lstm.npy"
+Y_FILE_PREDICTED_VELOCITY = DATA_DIR_INTERIM / "y_predicted_laststep.npy"
 
-MODEL_FILE_TRANSFER_LSTM = DATA_DIR_INTERIM + "model_transfer_lstm.h5"
-MODEL_FILE_LSTM = DATA_DIR_INTERIM + "model_lstm.h5"
-MODEL_WEIGHT_FILE_LSTM = DATA_DIR_INTERIM + "model_weights_lstm.h5"
-MODEL_FILE_LSTM_GRID = DATA_DIR_INTERIM + "model_lstm_grid.h5"
-MODEL_WEIGHT_FILE_LSTM_GRID = DATA_DIR_INTERIM + "model_weights_lstm_grid.h5"
+MODEL_FILE_TRANSFER_LSTM = DATA_DIR_INTERIM / "model_transfer_lstm.h5"
+MODEL_FILE_LSTM = DATA_DIR_INTERIM / "model_lstm.h5"
+MODEL_WEIGHT_FILE_LSTM = DATA_DIR_INTERIM / "model_weights_lstm.h5"
+MODEL_FILE_LSTM_GRID = DATA_DIR_INTERIM / "model_lstm_grid.h5"
+MODEL_WEIGHT_FILE_LSTM_GRID = DATA_DIR_INTERIM / "model_weights_lstm_grid.h5"
 
-GEOJSON_FILE_OBSERVATION = TRAINING_DIR + "trajectory_coordinate_observation.geojson"
-GEOJSON_FILE_TRUE = TRAINING_DIR + "trajectory_coordinate_true.geojson"
-GEOJSON_FILE_PREDICTED_LSTM = TRAINING_DIR + "trajectory_coordinate_predicted_lstm.geojson"
-GEOJSON_FILE_OBSERVATION_GRID = TRAINING_DIR + "trajectory_grid_observation.geojson"
-GEOJSON_FILE_TRUE_GRID = TRAINING_DIR + "trajectory_grid_true.geojson"
-GEOJSON_FILE_PREDICTED_LSTM_GRID = TRAINING_DIR +"trajectory_grid_predicted_lstm.geojson"
+GEOJSON_FILE_OBSERVATION = TRAINING_DIR / "trajectory_coordinate_observation.geojson"
+GEOJSON_FILE_TRUE = TRAINING_DIR / "trajectory_coordinate_true.geojson"
+GEOJSON_FILE_PREDICTED_LSTM = TRAINING_DIR / "trajectory_coordinate_predicted_lstm.geojson"
+GEOJSON_FILE_OBSERVATION_GRID = TRAINING_DIR / "trajectory_grid_observation.geojson"
+GEOJSON_FILE_TRUE_GRID = TRAINING_DIR / "trajectory_grid_true.geojson"
+GEOJSON_FILE_PREDICTED_LSTM_GRID = TRAINING_DIR / "trajectory_grid_predicted_lstm.geojson"
 
-GEOJSON_FILE_EVALUATION_OBSERVATION = EVALUATION_DIR + "trajectory_coordinate_observation.geojson"
-GEOJSON_FILE_EVALUATION_TRUE = EVALUATION_DIR + "trajectory_coordinate_true.geojson"
-GEOJSON_FILE_EVALUATION_PREDICTED_LSTM = EVALUATION_DIR + "trajectory_coordinate_predicted_lstm.geojson"
-GEOJSON_FILE_EVALUATION_OBSERVATION_GRID = EVALUATION_DIR + "trajectory_grid_observation.geojson"
-GEOJSON_FILE_EVALUATION_TRUE_GRID = EVALUATION_DIR + "trajectory_grid_true.geojson"
-GEOJSON_FILE_EVALUATION_PREDICTED_LSTM_GRID = EVALUATION_DIR + "trajectory_grid_predicted_lstm.geojson"
+GEOJSON_FILE_EVALUATION_OBSERVATION = EVALUATION_DIR / "trajectory_coordinate_observation.geojson"
+GEOJSON_FILE_EVALUATION_TRUE = EVALUATION_DIR / "trajectory_coordinate_true.geojson"
+GEOJSON_FILE_EVALUATION_PREDICTED_LSTM = EVALUATION_DIR / "trajectory_coordinate_predicted_lstm.geojson"
+GEOJSON_FILE_EVALUATION_OBSERVATION_GRID = EVALUATION_DIR / "trajectory_grid_observation.geojson"
+GEOJSON_FILE_EVALUATION_TRUE_GRID = EVALUATION_DIR / "trajectory_grid_true.geojson"
+GEOJSON_FILE_EVALUATION_PREDICTED_LSTM_GRID = EVALUATION_DIR / "trajectory_grid_predicted_lstm.geojson"
 
 # GEOJSON_FILE_EVALUATION_RAW = EVALUATION_DIR + "trajectory_coordinate_raw.geojson"
 
-CSV_TRAJECTORY_FILE_EVALUATION_OBSERVATION_GRID = EVALUATION_DIR + "csv_trajectory_grid_observation.csv"
-CSV_TRAJECTORY_FILE_EVALUATION_TRUE_GRID = EVALUATION_DIR + "csv_trajectory_grid_true.csv"
-CSV_TRAJECTORY_FILE_EVALUATION_PREDICTED_GRID = EVALUATION_DIR + "csv_trajectory_grid_predicted.csv"
+CSV_TRAJECTORY_FILE_EVALUATION_OBSERVATION_GRID = EVALUATION_DIR / "csv_trajectory_grid_observation.csv"
+CSV_TRAJECTORY_FILE_EVALUATION_TRUE_GRID = EVALUATION_DIR / "csv_trajectory_grid_true.csv"
+CSV_TRAJECTORY_FILE_EVALUATION_PREDICTED_GRID = EVALUATION_DIR / "csv_trajectory_grid_predicted.csv"
 
-CSV_TRAJECTORY_FILE_EVALUATION_RAW = EVALUATION_DIR + "csv_trajectory_raw.csv"
+CSV_TRAJECTORY_FILE_EVALUATION_RAW = EVALUATION_DIR / "csv_trajectory_raw.csv"
 
-LSI_MODEL_FILE = DATA_DIR_INTERIM + "Topic_LSI.model"
-LDA_MODEL_FILE = DATA_DIR_INTERIM + "Topic_LDA.model"
-DOC2VEC_MODEL_FILE = DATA_DIR_INTERIM + "Topic_Doc2Vec.model"
+LSI_MODEL_FILE = DATA_DIR_INTERIM / "Topic_LSI.model"
+LDA_MODEL_FILE = DATA_DIR_INTERIM / "Topic_LDA.model"
+DOC2VEC_MODEL_FILE = DATA_DIR_INTERIM / "Topic_Doc2Vec.model"
 
-LSI_TOPIC_FILE = DATA_DIR_PROCESSED + "Topic_Feature_LSI.npy"
-LDA_TOPIC_FILE = DATA_DIR_PROCESSED + "Topic_Feature_LDA.npy"
-DOC2VEC_TOPIC_FILE = DATA_DIR_PROCESSED + "Topic_Feature_Doc2Vec.npy"
+LSI_TOPIC_FILE = DATA_DIR_PROCESSED / "Topic_Feature_LSI.npy"
+LDA_TOPIC_FILE = DATA_DIR_PROCESSED / "Topic_Feature_LDA.npy"
+DOC2VEC_TOPIC_FILE = DATA_DIR_PROCESSED / "Topic_Feature_Doc2Vec.npy"
 
-LSI_TOPIC_EVALUATION_FILE = DATA_DIR_PROCESSED + "Topic_Feature_evaluation_LSI.npy"
-LDA_TOPIC_EVALUATION_FILE = DATA_DIR_PROCESSED + "Topic_Feature_evaluation_LDA.npy"
-DOC2VEC_TOPIC_EVALUATION_FILE = DATA_DIR_PROCESSED + "Topic_Feature_evaluation_Doc2Vec.npy"
+LSI_TOPIC_EVALUATION_FILE = DATA_DIR_PROCESSED / "Topic_Feature_evaluation_LSI.npy"
+LDA_TOPIC_EVALUATION_FILE = DATA_DIR_PROCESSED / "Topic_Feature_evaluation_LDA.npy"
+DOC2VEC_TOPIC_EVALUATION_FILE = DATA_DIR_PROCESSED / "Topic_Feature_evaluation_Doc2Vec.npy"
 
-DICT_FILE = DATA_DIR_INTERIM + "corpus.dict"
-MM_CORPUS_FILE = DATA_DIR_INTERIM + "corpus.mm"
-TFIDF_FILE = DATA_DIR_INTERIM + "tfidf.tfidf"
+DICT_FILE = DATA_DIR_INTERIM / "corpus.dict"
+MM_CORPUS_FILE = DATA_DIR_INTERIM / "corpus.mm"
+TFIDF_FILE = DATA_DIR_INTERIM / "tfidf.tfidf"
 
 
 # TEMPORAL_DATAFRAME = DATA_DIR / "interim/temp.h5"
