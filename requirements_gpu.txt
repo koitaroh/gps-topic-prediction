@@ -1,9 +1,9 @@
 Keras
-tensorflow-gpu
+tensorflow-gpu == 1.9
 h5py
 pymysql
 sqlalchemy
-numpy
+numpy == 1.14.5
 pandas
 requests
 geopy
