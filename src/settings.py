@@ -34,8 +34,8 @@ SLACK_TOKEN = conf.get('Slack', 'token')
 sc = SlackClient(SLACK_TOKEN)
 
 ######
-EXPERIMENT_ENVIRONMENT = "local"
-# EXPERIMENT_ENVIRONMENT = "remote"
+# EXPERIMENT_ENVIRONMENT = "local"
+EXPERIMENT_ENVIRONMENT = "remote"
 ######
 
 ## Local
@@ -71,13 +71,29 @@ if EXPERIMENT_ENVIRONMENT == "local":
     }
 
     # EXPERIMENT_DIR = Path("/Users/koitaroh/Documents/Data/Experiments/") / EXPERIMENT_PARAMETERS["EXPERIMENT_NAME"]
-    EXPERIMENT_DIR = src_dir.parent / "data/output/" / EXPERIMENT_PARAMETERS["EXPERIMENT_NAME"]
 
     # DATA_EXTERNAL_DIR = src_dir.parent / "data/external"
     # DATA_INTERIM_DIR = src_dir.parent / "data/interim"
     # DATA_PROCESSED_DIR = src_dir.parent / "data/processed"
     # DATA_RAW_DIR = src_dir.parent / "data/raw"
     # RESULTS_DIR = src_dir.parent / "results/"
+
+    DATA_DIR_RAW = src_dir.parent / "data/raw/"
+    DATA_DIR_PROCESSED = src_dir.parent / "data/processed/"
+    DATA_DIR_INTERIM = src_dir.parent / "data/interim/"
+    OUTPUT_DIR = src_dir.parent / "data/output/" / EXPERIMENT_PARAMETERS["EXPERIMENT_NAME"]
+
+    if EXPERIMENT_PARAMETERS["INPUT_DATASET"] == "ZDC":
+        GPS_RAW_DIR = DATA_DIR_RAW / "2012/"
+    elif EXPERIMENT_PARAMETERS["INPUT_DATASET"] == "Interpolated":
+        GPS_RAW_DIR = DATA_DIR_RAW / "gps_trip_result_kanto_201207/"
+
+    GPS_FILTERED = DATA_DIR_PROCESSED / ("filtered_" + EXPERIMENT_PARAMETERS["EXPERIMENT_NAME"] + ".csv")
+    GPS_INTERPOLATED_FILTERED = DATA_DIR_PROCESSED / (
+                "filtered_interpolated_" + EXPERIMENT_PARAMETERS["EXPERIMENT_NAME"] + ".csv")
+    GPS_INTERPOLATED_FILTERED_EVALUATION = DATA_DIR_PROCESSED / (
+                "filtered_interpolated_evaluation_" + EXPERIMENT_PARAMETERS["EXPERIMENT_NAME"] + ".csv")
+    # TRANSFER_CSV_FILTERED = EXPERIMENT_DIR + "transfer_filtered.csv"
 
 
     # if EXPERIMENT_PARAMETERS["INPUT_DATASET"] == "ZDC":
@@ -142,22 +158,53 @@ if EXPERIMENT_ENVIRONMENT == "remote":
         # 'SAMPLE_SIZE' : 10000, #1000000 for default
     }
 
-    EXPERIMENT_DIR = "/home/koitaroh/" + EXPERIMENT_PARAMETERS["EXPERIMENT_NAME"] + "/"
+
+    # EXPERIMENT_DIR = Path("/Users/koitaroh/Documents/Data/Experiments/") / EXPERIMENT_PARAMETERS["EXPERIMENT_NAME"]
+    # EXPERIMENT_DIR = src_dir.parent / "data/output/" / EXPERIMENT_PARAMETERS["EXPERIMENT_NAME"]
+
+    # DATA_EXTERNAL_DIR = src_dir.parent / "data/external"
+    # DATA_INTERIM_DIR = src_dir.parent / "data/interim"
+    # DATA_PROCESSED_DIR = src_dir.parent / "data/processed"
+    # DATA_RAW_DIR = src_dir.parent / "data/raw"
+    # RESULTS_DIR = src_dir.parent / "results/"
+
+    DATA_DIR_RAW = src_dir.parent / "data/raw/"
+    DATA_DIR_PROCESSED = src_dir.parent / "data/processed/"
+    DATA_DIR_INTERIM = src_dir.parent / "data/interim/"
+    OUTPUT_DIR = src_dir.parent / "data/output/" / EXPERIMENT_PARAMETERS["EXPERIMENT_NAME"]
 
     if EXPERIMENT_PARAMETERS["INPUT_DATASET"] == "ZDC":
-        DATA_DIR = "/data/zdc/2012/FeaturePhone/"
+        GPS_RAW_DIR = DATA_DIR_RAW / "2012/"
     elif EXPERIMENT_PARAMETERS["INPUT_DATASET"] == "Interpolated":
-        DATA_DIR = "/data/miyazawa/gps_trip_result_kanto_201207/"
+        GPS_RAW_DIR = DATA_DIR_RAW / "gps_trip_result_kanto_201207/"
 
-    # DATA_DIR = "/data/zdc/2013/MOD_ATF_ITSMONAVI/2013/"
+    GPS_FILTERED = DATA_DIR_PROCESSED / ("filtered_" + EXPERIMENT_PARAMETERS["EXPERIMENT_NAME"] + ".csv")
+    GPS_INTERPOLATED_FILTERED = DATA_DIR_PROCESSED / (
+                "filtered_interpolated_" + EXPERIMENT_PARAMETERS["EXPERIMENT_NAME"] + ".csv")
+    GPS_INTERPOLATED_FILTERED_EVALUATION = DATA_DIR_PROCESSED / (
+                "filtered_interpolated_evaluation_" + EXPERIMENT_PARAMETERS["EXPERIMENT_NAME"] + ".csv")
+    # TRANSFER_CSV_FILTERED = EXPERIMENT_DIR + "transfer_filtered.csv"
 
+    # EXPERIMENT_DIR = "/home/koitaroh/" + EXPERIMENT_PARAMETERS["EXPERIMENT_NAME"] + "/"
+    #
+    #
+    # DATA_DIR_RAW = Path('/data/miyazawa/')
+    # DATA_DIR_PROCESSED = src_dir.parent / "data/processed/"
+    # DATA_DIR_INTERIM = src_dir.parent / "data/interim/"
+    # OUTPUT_DIR = src_dir.parent / "data/output/" / EXPERIMENT_PARAMETERS["EXPERIMENT_NAME"]
+    #
+    # if EXPERIMENT_PARAMETERS["INPUT_DATASET"] == "ZDC":
+    #     GPS_RAW_DIR = DATA_DIR_RAW / "2012/"
+    # elif EXPERIMENT_PARAMETERS["INPUT_DATASET"] == "Interpolated":
+    #     GPS_RAW_DIR = DATA_DIR_RAW / "gps_trip_result_kanto_201207/"
+    #
+    # GPS_FILTERED = DATA_DIR_PROCESSED / ("filtered_" + EXPERIMENT_PARAMETERS["EXPERIMENT_NAME"] + ".csv")
+    # GPS_INTERPOLATED_FILTERED = DATA_DIR_PROCESSED / (
+    #         "filtered_interpolated_" + EXPERIMENT_PARAMETERS["EXPERIMENT_NAME"] + ".csv")
+    # GPS_INTERPOLATED_FILTERED_EVALUATION = DATA_DIR_PROCESSED / (
+    #         "filtered_interpolated_evaluation_" + EXPERIMENT_PARAMETERS["EXPERIMENT_NAME"] + ".csv")
+    # # TRANSFER_CSV_FILTERED = EXPERIMENT_DIR + "transfer_filtered.csv"
 
-    # DATA_DIR = Path('/data/miyazawa/habitat/data')
-    # DATA_EXTERNAL_DIR = DATA_DIR / "external"
-    # DATA_INTERIM_DIR = DATA_DIR / "interim"
-    # DATA_PROCESSED_DIR = DATA_DIR / "processed"
-    # DATA_RAW_DIR = DATA_DIR / "raw"
-    # RESULTS_DIR = src_dir.parent / "results/"
 
     import tensorflow as tf
     from keras.backend.tensorflow_backend import set_session
@@ -167,11 +214,6 @@ if EXPERIMENT_ENVIRONMENT == "remote":
     config.gpu_options.allow_growth = True
     set_session(tf.Session(config=config))
 
-    GPS_DIR_PROCESSED = "/data/miyazawa/zdc_filtered/"
-    GPS_FILTERED =  GPS_DIR_PROCESSED + "filtered_" + EXPERIMENT_PARAMETERS["EXPERIMENT_NAME"] + ".csv"
-    GPS_INTERPOLATED_FILTERED =  GPS_DIR_PROCESSED + "filtered_interpolated_" + EXPERIMENT_PARAMETERS["EXPERIMENT_NAME"] + ".csv"
-    GPS_INTERPOLATED_FILTERED_EVALUATION = GPS_DIR_PROCESSED + "filtered_interpolated_evaluation_" + EXPERIMENT_PARAMETERS["EXPERIMENT_NAME"] + ".csv"
-    # TRANSFER_CSV_FILTERED = EXPERIMENT_DIR + "transfer_filtered.csv"
     TEST_DB_TABLE_NAME = "gps_log_2"
 #################################################################
 
@@ -183,35 +225,16 @@ CITYEMD_DISTANCE_MATRIX_FILE = "../data/processed/cityemd_distance_matrix.npy"
 LB_MODE_CLASSES_FILE = "../data/processed/lb_mode_classes.npy"
 LE_GRID_CLASSES_FILE = "../data/processed/le_grid_classes.npy"
 
-# EXPERIMENT_DIR = src_dir.parent / "data/output/" / EXPERIMENT_PARAMETERS["EXPERIMENT_NAME"]
-
-DATA_DIR_RAW = src_dir.parent / "data/raw/"
-DATA_DIR_PROCESSED = src_dir.parent / "data/processed/"
-DATA_DIR_INTERIM = src_dir.parent / "data/interim/"
-OUTPUT_DIR = src_dir.parent / "data/output/" / EXPERIMENT_PARAMETERS["EXPERIMENT_NAME"]
-
-if EXPERIMENT_PARAMETERS["INPUT_DATASET"] == "ZDC":
-    GPS_RAW_DIR = DATA_DIR_RAW / "2012/"
-elif EXPERIMENT_PARAMETERS["INPUT_DATASET"] == "Interpolated":
-    GPS_RAW_DIR = DATA_DIR_RAW / "gps_trip_result_kanto_201207/"
-
-GPS_FILTERED = DATA_DIR_PROCESSED / ("filtered_" + EXPERIMENT_PARAMETERS["EXPERIMENT_NAME"] + ".csv")
-GPS_INTERPOLATED_FILTERED = DATA_DIR_PROCESSED / ("filtered_interpolated_" + EXPERIMENT_PARAMETERS["EXPERIMENT_NAME"] + ".csv")
-GPS_INTERPOLATED_FILTERED_EVALUATION = DATA_DIR_PROCESSED / ("filtered_interpolated_evaluation_" + EXPERIMENT_PARAMETERS["EXPERIMENT_NAME"] + ".csv")
-# TRANSFER_CSV_FILTERED = EXPERIMENT_DIR + "transfer_filtered.csv"
-
 
 FIGURE_DIR = OUTPUT_DIR / "figures/"
 TRAINING_DIR = OUTPUT_DIR / "training/"
 EVALUATION_DIR = OUTPUT_DIR / "evaluation/"
 
 logger.info("EXPERIMENT_NAME: %s", EXPERIMENT_PARAMETERS["EXPERIMENT_NAME"])
-logger.info("EXPERIMENT_DIR: %s", EXPERIMENT_DIR)
 logger.info("EXPERIMENT PARAMETERS: %s" % EXPERIMENT_PARAMETERS)
 if not os.path.exists(DATA_DIR_PROCESSED): os.makedirs(DATA_DIR_PROCESSED)
 if not os.path.exists(DATA_DIR_INTERIM): os.makedirs(DATA_DIR_INTERIM)
 if not os.path.exists(OUTPUT_DIR): os.makedirs(OUTPUT_DIR)
-if not os.path.exists(EXPERIMENT_DIR): os.makedirs(EXPERIMENT_DIR)
 if not os.path.exists(FIGURE_DIR): os.makedirs(FIGURE_DIR)
 if not os.path.exists(TRAINING_DIR): os.makedirs(TRAINING_DIR)
 if not os.path.exists(EVALUATION_DIR): os.makedirs(EVALUATION_DIR)
