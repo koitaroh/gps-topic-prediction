@@ -1,11 +1,11 @@
-Keras
+keras == 2.2
 tensorflow-gpu == 1.9
 h5py
 pymysql
 sqlalchemy
 numpy == 1.14.5
 pandas
-requests
+requests == 2.16.2
 geopy
 scikit-learn
 tables
@@ -14,6 +14,6 @@ tqdm
 future
 gensim
 geojson
-dropbox
+dropbox == 9.0
 matplotlib
 pyemd

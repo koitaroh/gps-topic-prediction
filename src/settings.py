@@ -168,7 +168,7 @@ if EXPERIMENT_ENVIRONMENT == "remote":
     # DATA_RAW_DIR = src_dir.parent / "data/raw"
     # RESULTS_DIR = src_dir.parent / "results/"
 
-    DATA_DIR_RAW = src_dir.parent / "data/raw/"
+    DATA_DIR_RAW = Path('/data/miyazawa/')
     DATA_DIR_PROCESSED = src_dir.parent / "data/processed/"
     DATA_DIR_INTERIM = src_dir.parent / "data/interim/"
     OUTPUT_DIR = src_dir.parent / "data/output/" / EXPERIMENT_PARAMETERS["EXPERIMENT_NAME"]
