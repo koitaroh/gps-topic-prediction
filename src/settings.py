@@ -2,10 +2,8 @@ import datetime
 import os
 import pymysql
 import configparser
-import slackclient
 from slackclient import SlackClient
 import sqlalchemy
-import atexit
 from pathlib import Path
 
 # Logging ver. 2017-12-14
@@ -132,8 +130,8 @@ if EXPERIMENT_ENVIRONMENT == "remote":
         # 'INPUT_DATASET' : "iBank",
         'PREDICTION_INPUT_LENGTH': 144, # 144 for 12 hour in 10 mins
         'PREDICTION_OUTPUT_LENGTH': 6 , # 6 for 1 hour in 10 mins
-        'SAMPLE_USER_SIZE': 100000, # 107618 default
-        'SAMPLE_SIZE' : 100000, #1000000 for default, 10000000 for more
+        'SAMPLE_USER_SIZE': 10000, # 10000 for 456, 100000 for dpdl4
+        'SAMPLE_SIZE' : 10000, #10000 for 456, 100000 for dpdl4
 
         'TRAINING_OBSERVATION_START': "2012-07-25 07:00:00",
         'TRAINING_OBSERVATION_END': "2012-07-26 06:59:59",
