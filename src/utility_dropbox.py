@@ -58,7 +58,7 @@ def upload_dir_to_dropbox(dir, path_in_dropbox):
     for root, dirs, files in os.walk(dir):
         for fn in files:
             if fn[0] != '.':
-                file = root + fn
+                file = root + "/" +  fn
                 with open(file, 'rb') as f:
                     # We use WriteMode=overwrite to make sure that the settings in the file
                     # are changed on upload
