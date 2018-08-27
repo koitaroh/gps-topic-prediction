@@ -139,14 +139,14 @@ if EXPERIMENT_ENVIRONMENT == "remote":
         'TRAINING_PREDICTION_END': "2012-07-26 07:59:59",
 
 
-        'EVALUATION_SAMPLE_SIZE': 100000,  # Sample size for visualization
+        'EVALUATION_SAMPLE_SIZE': 10000,  # Sample size for visualization
         'EVALUATION_OBSERVATION_START': "2012-07-25 07:00:00",
         'EVALUATION_OBSERVATION_END': "2012-07-26 06:59:59",
         'EVALUATION_PREDICTION_START': "2012-07-26 07:00:00",
         'EVALUATION_PREDICTION_END': "2012-07-26 07:59:59",
 
         'VISUALIZATION_SAMPLE_SIZE': 200,  # Sample size for visualization
-        'VISUALIZATION_CSV_SAMPLE_SIZE': 100000,  # Sample size for visualization
+        'VISUALIZATION_CSV_SAMPLE_SIZE': 10000,  # Sample size for visualization
 
         # Transfer
         # 'TIMESTART': "2016-06-01 07:00:00",

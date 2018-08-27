@@ -248,7 +248,8 @@ if __name__ == '__main__':
     # Load Reguralized dataframe
     df_users_regularized = pd.read_hdf(TEMPORAL_DATAFRAME, "df_users_regularized")
     # print(df_users_regularized)
-    X_coordinate_all, y_coordinate_all, X_grid_all, y_grid_all, X_mode_all, y_mode_all, X_topic_all, y_topic_all  = convert_dataframe_to_coordinate_mode_and_grid_mode_topic_sequences(df_users_regularized, EXPERIMENT_PARAMETERS)
+    X_coordinate_all, y_coordinate_all, X_grid_all, y_grid_all, X_mode_all, y_mode_all, X_topic_all, y_topic_all  \
+        = convert_dataframe_to_coordinate_mode_and_grid_mode_topic_sequences(df_users_regularized, EXPERIMENT_PARAMETERS)
 
     # print(X_coordinate_all[0])
     # print(y_coordinate_all[0])

@@ -58,8 +58,7 @@ RUN conda install -y python=${python_version} && \
       pygpu \
       pyyaml \
       scikit-learn \
-      six \
-      keras && \
+      six &&\
     while read requirement; do conda install --yes $requirement; done < requirements_gpu.txt && \
     conda clean -yt
 
