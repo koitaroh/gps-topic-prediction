@@ -2,7 +2,6 @@ import atexit
 import multiprocessing as mp
 from datetime import datetime, timedelta
 import gensim
-# import tensorflow as tf
 import geopy
 import numpy as np
 import pandas as pd
@@ -104,22 +103,24 @@ def load_tweets_to_dataframe_from_database(table_name, stoplist, conn, sample_df
     return docs_token, docs_doc2vec
 
 
-def create_corpora(token, dict_file, mm_corpora_file, tfidf_file):
+def create_corpora(token, dict_file_path, mm_corpora_file, tfidf_file):
     logger.info("Creating corpora")
-    dictionary = gensim.corpora.Dictionary(token)
-    dictionary.save(dict_file)
-    print(dictionary)
-    # print(dictionary.token2id)
-    # print(token)
 
-    corpus_mm = [dictionary.doc2bow(text) for text in token]
-    gensim.corpora.MmCorpus.serialize(mm_corpora_file, corpus_mm)
-    tfidf = gensim.models.TfidfModel(corpus_mm)
-    tfidf.save(tfidf_file)
-    corpus_tfidf = tfidf[corpus_mm]
+    with open(dict_file_path, 'wb') as dict_file:
+        dictionary = gensim.corpora.Dictionary(token)
+        dictionary.save(dict_file)
+        print(dictionary)
+        # print(dictionary.token2id)
+        # print(token)
 
-    # print(corpus_mm)
-    # print(corpus_tfidf)
+        corpus_mm = [dictionary.doc2bow(text) for text in token]
+        gensim.corpora.MmCorpus.serialize(mm_corpora_file, corpus_mm)
+        tfidf = gensim.models.TfidfModel(corpus_mm)
+        tfidf.save(tfidf_file)
+        corpus_tfidf = tfidf[corpus_mm]
+
+        # print(corpus_mm)
+        # print(corpus_tfidf)
 
     return dictionary, corpus_mm, corpus_tfidf, tfidf
 
@@ -234,7 +235,6 @@ def create_global_topic_features(models, dictionary, tfidf, temporal_index, EXPE
 
 if __name__ == '__main__':
     slack_client = s.sc
-    DATA_DIR = s.DATA_DIR
     EXPERIMENT_PARAMETERS = s.EXPERIMENT_PARAMETERS
     LSI_MODEL_FILE = s.LSI_MODEL_FILE
     LDA_MODEL_FILE = s.LDA_MODEL_FILE
@@ -257,7 +257,7 @@ if __name__ == '__main__':
     logger.info(temporal_index)
     logger.info(len(temporal_index))
 
-    engine, conn, metadata = utility_database.establish_db_connection_mysql_local()
+    engine, conn, metadata = utility_database.establish_db_connection_mysql_twitter()
 
     # Load tweets for LSI, LDA
     docs_token, docs_doc2vec = load_tweets_to_dataframe_from_database(TABLE_NAME, STOPLIST_FILE, conn, 100)
