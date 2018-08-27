@@ -46,6 +46,7 @@ def define_four_gram(X_train, y_train):
             dict_gram4[key_gram4] = 1
 
     gram4 = [(k, dict_gram4[k]) for k in sorted(dict_gram4, key=dict_gram4.get, reverse=True)]
+    # print(gram4)
     print('gram4 is created.')
     return gram4
 
@@ -62,14 +63,15 @@ def predict(X_test, y_test, gram4):
     print(f'Testing {N} samples.')
     correct = 0
     unlearned = 0
+    X_test = X_test[:, -4:-1]
 
     for i in range(N):
         gram3 = tuple(X_test[i].ravel())
         prediction = predict_gram4(gram4, gram3)
         if prediction == y_test[i][0][0]:
-            correct = + 1
+            correct += 1
         elif prediction == '':
-            unlearned = + 1
+            unlearned += 1
 
     print(f'{correct} correct test.')
     print(f'{unlearned} unlearned test.')
@@ -92,6 +94,9 @@ if __name__ == '__main__':
     Y = np.load(Y_GRID_FILE)
     X_train, X_test, y_train, y_test = train_test_split(X, Y, train_size=0.8, test_size=0.2, random_state=7)
     gram4 = define_four_gram(X_train, y_train)
+    print('Evaluating train set')
+    predict(X_train, y_train, gram4)
+    print('Evaluating test set')
     predict(X_test, y_test, gram4)
 
     # Make notification
