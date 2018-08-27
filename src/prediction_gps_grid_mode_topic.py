@@ -99,46 +99,6 @@ def load_grid_mode_topic_dataset(X_GRID_FILE, Y_GRID_FILE, X_MODE_FILE, Y_MODE_F
     return X_train_all, y_train_all, X_test, y_test, X_mode_train_all, X_mode_test, y_mode_train_all, y_mode_test, X_topic_train_all, X_topic_test, y_topic_train_all, y_topic_test
 
 
-# def convert_spatial_index_to_raw_coordinates(EXPERIMENT_PARAMETERS, spatial_index, spatial_index_number):
-#     spatial_index_number = int(spatial_index_number)
-#     y_index = spatial_index_number // spatial_index[3]
-#     x_index = spatial_index_number - (y_index * spatial_index[3])
-#     print(x_index)
-#     print(y_index)
-#     x = EXPERIMENT_PARAMETERS["AOI"][0] + (spatial_index[0] * x_index) + (spatial_index[0] / 2)
-#     y = EXPERIMENT_PARAMETERS["AOI"][1] + (spatial_index[1] * y_index) + (spatial_index[1] / 2)
-#     return x, y
-#
-#
-# def convert_spatial_index_to_latitude(spatial_index_number, EXPERIMENT_PARAMETERS, spatial_index):
-#     y_index = spatial_index_number // spatial_index[3]
-#     y = EXPERIMENT_PARAMETERS["AOI"][1] + (spatial_index[1] * y_index) + (spatial_index[1] / 2)
-#     return y
-#
-#
-# def convert_spatial_index_to_longitude(spatial_index_number, EXPERIMENT_PARAMETERS, spatial_index):
-#     y_index = spatial_index_number // spatial_index[3]
-#     x_index = spatial_index_number - (y_index * spatial_index[3])
-#     x = EXPERIMENT_PARAMETERS["AOI"][0] + (spatial_index[0] * x_index) + (spatial_index[0] / 2)
-#     return x
-#
-#
-# def convert_spatial_index_array_to_coordinate_array_old(input_array, EXPERIMENT_PARAMETERS, spatial_index, Multistep=False):
-#     if Multistep:
-#         X_shape = input_array.shape
-#         # print(X_shape) # (18, 12, 1)
-#         x_array = np.apply_along_axis(convert_spatial_index_to_longitude, 0, input_array, EXPERIMENT_PARAMETERS, spatial_index)
-#         y_array = np.apply_along_axis(convert_spatial_index_to_latitude, 0, input_array, EXPERIMENT_PARAMETERS, spatial_index)
-#         latlon_array = np.concatenate((y_array, x_array), axis=2)
-#     else:
-#         x_array = np.apply_along_axis(convert_spatial_index_to_longitude, 0, input_array, EXPERIMENT_PARAMETERS,
-#                                       spatial_index)
-#         y_array = np.apply_along_axis(convert_spatial_index_to_latitude, 0, input_array, EXPERIMENT_PARAMETERS,
-#                                       spatial_index)
-#         latlon_array = np.concatenate((y_array, x_array), axis=1)
-#     return latlon_array
-
-
 def convert_spatial_index_array_to_coordinate_array(input_array, le_grid, Multistep=False):
     if Multistep:
         X_shape = input_array.shape
