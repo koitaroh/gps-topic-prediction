@@ -40,9 +40,9 @@ EXPERIMENT_ENVIRONMENT = "remote"
 #####################################################################################
 if EXPERIMENT_ENVIRONMENT == "local":
     EXPERIMENT_PARAMETERS = {
-        'EXPERIMENT_NAME': "Experiment_20171106_20120725_20120727_10mins_500users_3day_2layers",
-        'TIMESTART' : "2012-07-25 00:00:00",
-        'TIMEEND' : "2012-07-27 23:59:59",
+        'EXPERIMENT_NAME': "Experiment_local_201808281106",
+        'TIMESTART' : "2012-07-19 00:00:00",
+        'TIMEEND' : "2012-07-25 23:59:59",
         'AOI' : [138.72, 34.9, 140.87, 36.28],
         'UNIT_TEMPORAL' : 10,  # in minutes
         'UNIT_SPATIAL_METER' : 1000,
@@ -117,10 +117,10 @@ if EXPERIMENT_ENVIRONMENT == "local":
 #################################################################
 if EXPERIMENT_ENVIRONMENT == "remote":
     EXPERIMENT_PARAMETERS = {
-        'EXPERIMENT_NAME': "Experiment_20180123_20120725_20120727_10mins_24hours",
+        'EXPERIMENT_NAME': "Experiment_usual_10mins_24hours_20180828",
         # 'EXPERIMENT_NAME': "Experiment_20120725_20120725_5mins_25000users_2h_2layers",
-        'TIMESTART' : "2012-07-25 00:00:00",
-        'TIMEEND' : "2012-07-27 23:59:59",
+        'TIMESTART' : "2012-07-19 00:00:00",
+        'TIMEEND' : "2012-07-25 23:59:59",
         # aoi = [122.933198,24.045416,153.986939,45.522785] # Japan
         'AOI' : [138.72, 34.9, 140.87, 36.28],
         'UNIT_TEMPORAL' : 10,  # in minutes
@@ -130,8 +130,8 @@ if EXPERIMENT_ENVIRONMENT == "remote":
         # 'INPUT_DATASET' : "iBank",
         'PREDICTION_INPUT_LENGTH': 144, # 144 for 12 hour in 10 mins
         'PREDICTION_OUTPUT_LENGTH': 6 , # 6 for 1 hour in 10 mins
-        'SAMPLE_USER_SIZE': 10000, # 10000 for 456, 100000 for dpdl4
-        'SAMPLE_SIZE' : 10000, #10000 for 456, 100000 for dpdl4
+        'SAMPLE_USER_SIZE': 50000, # 10000 for 456, 100000 for dpdl4
+        'SAMPLE_SIZE' : 50000, #10000 for 456, 100000 for dpdl4
 
         'TRAINING_OBSERVATION_START': "2012-07-25 07:00:00",
         'TRAINING_OBSERVATION_END': "2012-07-26 06:59:59",
@@ -139,7 +139,7 @@ if EXPERIMENT_ENVIRONMENT == "remote":
         'TRAINING_PREDICTION_END': "2012-07-26 07:59:59",
 
 
-        'EVALUATION_SAMPLE_SIZE': 10000,  # Sample size for visualization
+        'EVALUATION_SAMPLE_SIZE': 50000,  # Sample size for visualization
         'EVALUATION_OBSERVATION_START': "2012-07-25 07:00:00",
         'EVALUATION_OBSERVATION_END': "2012-07-26 06:59:59",
         'EVALUATION_PREDICTION_START': "2012-07-26 07:00:00",
@@ -155,16 +155,6 @@ if EXPERIMENT_ENVIRONMENT == "remote":
         # 'TIMEEND_TEXT': "2016-06-01",
         # 'SAMPLE_SIZE' : 10000, #1000000 for default
     }
-
-
-    # EXPERIMENT_DIR = Path("/Users/koitaroh/Documents/Data/Experiments/") / EXPERIMENT_PARAMETERS["EXPERIMENT_NAME"]
-    # EXPERIMENT_DIR = src_dir.parent / "data/output/" / EXPERIMENT_PARAMETERS["EXPERIMENT_NAME"]
-
-    # DATA_EXTERNAL_DIR = src_dir.parent / "data/external"
-    # DATA_INTERIM_DIR = src_dir.parent / "data/interim"
-    # DATA_PROCESSED_DIR = src_dir.parent / "data/processed"
-    # DATA_RAW_DIR = src_dir.parent / "data/raw"
-    # RESULTS_DIR = src_dir.parent / "results/"
 
     DATA_DIR_RAW = Path('/data/miyazawa/')
     DATA_DIR_PROCESSED = src_dir.parent / "data/processed/"
@@ -182,27 +172,6 @@ if EXPERIMENT_ENVIRONMENT == "remote":
     GPS_INTERPOLATED_FILTERED_EVALUATION = DATA_DIR_PROCESSED / (
                 "filtered_interpolated_evaluation_" + EXPERIMENT_PARAMETERS["EXPERIMENT_NAME"] + ".csv")
     # TRANSFER_CSV_FILTERED = EXPERIMENT_DIR + "transfer_filtered.csv"
-
-    # EXPERIMENT_DIR = "/home/koitaroh/" + EXPERIMENT_PARAMETERS["EXPERIMENT_NAME"] + "/"
-    #
-    #
-    # DATA_DIR_RAW = Path('/data/miyazawa/')
-    # DATA_DIR_PROCESSED = src_dir.parent / "data/processed/"
-    # DATA_DIR_INTERIM = src_dir.parent / "data/interim/"
-    # OUTPUT_DIR = src_dir.parent / "data/output/" / EXPERIMENT_PARAMETERS["EXPERIMENT_NAME"]
-    #
-    # if EXPERIMENT_PARAMETERS["INPUT_DATASET"] == "ZDC":
-    #     GPS_RAW_DIR = DATA_DIR_RAW / "2012/"
-    # elif EXPERIMENT_PARAMETERS["INPUT_DATASET"] == "Interpolated":
-    #     GPS_RAW_DIR = DATA_DIR_RAW / "gps_trip_result_kanto_201207/"
-    #
-    # GPS_FILTERED = DATA_DIR_PROCESSED / ("filtered_" + EXPERIMENT_PARAMETERS["EXPERIMENT_NAME"] + ".csv")
-    # GPS_INTERPOLATED_FILTERED = DATA_DIR_PROCESSED / (
-    #         "filtered_interpolated_" + EXPERIMENT_PARAMETERS["EXPERIMENT_NAME"] + ".csv")
-    # GPS_INTERPOLATED_FILTERED_EVALUATION = DATA_DIR_PROCESSED / (
-    #         "filtered_interpolated_evaluation_" + EXPERIMENT_PARAMETERS["EXPERIMENT_NAME"] + ".csv")
-    # # TRANSFER_CSV_FILTERED = EXPERIMENT_DIR + "transfer_filtered.csv"
-
 
     import tensorflow as tf
     from keras.backend.tensorflow_backend import set_session

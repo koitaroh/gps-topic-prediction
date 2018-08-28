@@ -8,6 +8,7 @@ import pandas as pd
 from gensim.models.doc2vec import Doc2Vec, TaggedDocument
 from geopy.distance import vincenty
 from tqdm import tqdm
+from collections import Counter
 
 # Logging ver. 2017-10-30
 from logging import handlers
@@ -31,53 +32,28 @@ import jpgrid
 import utility_spatiotemporal_index
 
 
-# def define_temporal_index(EXPERIMENT_PARAMETERS):
-#     logger.info("Defining temporal indices")
-#     temporal_indices = []
-#     # temporal_indices = dict()
-#     temporal_index = 0
-#     timestart = datetime.strptime(EXPERIMENT_PARAMETERS["TIMESTART"], '%Y-%m-%d %H:%M:%S')
-#     timeend = datetime.strptime(EXPERIMENT_PARAMETERS["TIMEEND"], '%Y-%m-%d %H:%M:%S')
-#     unit_temporal = timedelta(minutes=EXPERIMENT_PARAMETERS["UNIT_TEMPORAL"])
-#     time_cursor = timestart
-#
-#     while (time_cursor < timeend):
-#         # time_cursor_str = datetime.strftime(time_cursor, '%Y-%m-%d %H:%M:%S')
-#         iso_year, iso_week_number, iso_weekday = time_cursor.isocalendar()
-#         temporal_indices.append([temporal_index, iso_year, iso_week_number, iso_weekday, time_cursor])
-#         # temporal_indices[temporal_index] = time_cursor
-#         temporal_index += 1
-#         time_cursor = time_cursor + unit_temporal
-#         # logger.debug(time_cursor_str)
-#     return temporal_indices
-#
-#
-# def define_spatial_index(EXPERIMENT_PARAMETERS):
-#     x1y1 = (EXPERIMENT_PARAMETERS["AOI"][1], EXPERIMENT_PARAMETERS["AOI"][0])
-#     x2y1 = (EXPERIMENT_PARAMETERS["AOI"][1], EXPERIMENT_PARAMETERS["AOI"][2])
-#     x1y2 = (EXPERIMENT_PARAMETERS["AOI"][3], EXPERIMENT_PARAMETERS["AOI"][0])
-#     x2y2 = (EXPERIMENT_PARAMETERS["AOI"][3], EXPERIMENT_PARAMETERS["AOI"][2])
-#     x_distance = geopy.distance.vincenty(x1y1, x2y1).meters
-#     y_distance = geopy.distance.vincenty(x1y1, x1y2).meters
-#     logger.debug("X distance: %s meters, Y distance: %s meters", x_distance, y_distance)
-#     x_unit_degree = round((((EXPERIMENT_PARAMETERS["AOI"][2] - EXPERIMENT_PARAMETERS["AOI"][0]) * EXPERIMENT_PARAMETERS["UNIT_SPATIAL_METER"]) / x_distance), 4)
-#     y_unit_degree = round((((EXPERIMENT_PARAMETERS["AOI"][3] - EXPERIMENT_PARAMETERS["AOI"][1]) * EXPERIMENT_PARAMETERS["UNIT_SPATIAL_METER"]) / y_distance), 4)
-#     logger.debug("X unit in degree: %s degrees, Y unit in degree: %s degrees", x_unit_degree, y_unit_degree)
-#     x_size = int((EXPERIMENT_PARAMETERS["AOI"][2] - EXPERIMENT_PARAMETERS["AOI"][0]) // x_unit_degree) + 1
-#     y_size = int((EXPERIMENT_PARAMETERS["AOI"][3] - EXPERIMENT_PARAMETERS["AOI"][1]) // y_unit_degree) + 1
-#     logger.info("X size: %s", x_size)
-#     logger.info("Y size: %s", y_size)
-#     logger.info("Size of spatial index: %s", x_size * y_size)
-#     # t_start = datetime.datetime.strptime(timestart, '%Y-%m-%d %H:%M:%S')
-#     # t_end = datetime.datetime.strptime(timeend, '%Y-%m-%d %H:%M:%S')
-#     # t_size = round((t_end - t_start) / datetime.timedelta(minutes=unit_temporal))
-#     # logger.info("T size: %s", t_size)
-#     # logger.info("Spatiotemporal units: %s", [t_size, x_size, y_size, num_topic])
-#     spatial_index = [x_unit_degree, y_unit_degree, x_size, y_size]
-#     return spatial_index
+def create_freq_stop_list_(table_name, stoplist, conn, n=100, min_freq=1):
+    logger.info("Loading tweets to dataframe for freq stop list")
+    fdist = Counter()
+    sql = "Select id, words from %s where words is not NULL and x is not NULL;" % table_name
+    df = pd.read_sql(sql, conn)
+    for index, row in tqdm(df.iterrows()):
+        words = row.words
+        tweet_id = row.id
+        words_token = gensim.utils.tokenize(words, lowercase=True, deacc=True, errors="ignore")
+        for word in words_token:
+            if word not in stoplist:
+                fdist[word] += 1
+    # print(f"Word frequency: {fdist}")
+    common_words = {word for word, freq in fdist.most_common(n)}
+    print(f"{n} most common words: {common_words}")
+    rare_words = {word for word, freq in fdist.items() if freq <= min_freq}
+    stopwords = common_words.union(rare_words)
+    print(f'Stop words ratio to total words: {len(stopwords)}/{len(fdist)}')
+    return stopwords
 
 
-def load_tweets_to_dataframe_from_database(table_name, stoplist, conn, sample_df_size):
+def load_tweets_to_dataframe_from_database(table_name, stoplist, freq_stop_list, conn, sample_df_size):
     logger.info("Loading tweets to dataframe")
     docs_token = []
     docs_doc2vec = []
@@ -94,8 +70,10 @@ def load_tweets_to_dataframe_from_database(table_name, stoplist, conn, sample_df
         words_token = gensim.utils.tokenize(words, lowercase=True, deacc=True, errors="ignore")
         words_token_list = []
         for word in words_token:
-            if word not in stoplist:
+            if word not in stoplist and word not in freq_stop_list:
                 words_token_list.append(word)
+
+
         docs_doc2vec.append(TaggedDocument(words=words_token_list, tags=[tweet_id]))
         # docs.append(x for x in gensim.utils.tokenize(words, lowercase=True, deacc=True, errors="ignore") if x not in stoplist)
         # yield (x for x in gensim.utils.tokenize(words, lowercase=True, deacc=True, errors="ignore") if x not in stoplist)
@@ -156,7 +134,7 @@ def train_doc2vec_model(docs_doc2vec, doc2vec_model_file, cores):
     return model_dm
 
 
-def create_global_topic_features(models, dictionary, tfidf, temporal_index, EXPERIMENT_PARAMETERS, topic_feature_files, table_name, stoplist, conn):
+def create_global_topic_features(models, dictionary, tfidf, temporal_index, EXPERIMENT_PARAMETERS, topic_feature_files, table_name, stoplist, freq_stop_list, conn):
 
     # For prototyping purpose
     # temporal_index = temporal_index[0:4]
@@ -181,7 +159,7 @@ def create_global_topic_features(models, dictionary, tfidf, temporal_index, EXPE
                 words = row.words
                 words_token = gensim.utils.tokenize(words, lowercase=True, deacc=True, errors="ignore")
                 for word in words_token:
-                    if word not in stoplist:
+                    if word not in stoplist and word not in freq_stop_list:
                         words_token_list.append(word)
             # print(words_token_list)
         docs_token.append(words_token_list)
@@ -259,8 +237,10 @@ if __name__ == '__main__':
 
     engine, conn, metadata = utility_database.establish_db_connection_mysql_twitter()
 
+    freq_stop_list = create_freq_stop_list_(TABLE_NAME, STOPLIST_FILE, conn, n=100, min_freq=1)
+
     # Load tweets for LSI, LDA
-    docs_token, docs_doc2vec = load_tweets_to_dataframe_from_database(TABLE_NAME, STOPLIST_FILE, conn, 100)
+    docs_token, docs_doc2vec = load_tweets_to_dataframe_from_database(TABLE_NAME, STOPLIST_FILE, freq_stop_list, conn, 100)
     dictionary, corpus_mm, corpus_tfidf, tfidf = create_corpora(docs_token, DICT_FILE, MM_CORPUS_FILE, TFIDF_FILE)
 
     # Train models
@@ -279,7 +259,8 @@ if __name__ == '__main__':
     topic_feature_files = {"lsi": LSI_TOPIC_FILE, "lda": LDA_TOPIC_FILE, "doc2vec": DOC2VEC_TOPIC_FILE}
 
     # Create topic features
-    create_global_topic_features(models, dictionary, tfidf, temporal_index, EXPERIMENT_PARAMETERS, topic_feature_files, TABLE_NAME, STOPLIST_FILE, conn)
+    engine, conn, metadata = utility_database.establish_db_connection_mysql_twitter()
+    create_global_topic_features(models, dictionary, tfidf, temporal_index, EXPERIMENT_PARAMETERS, topic_feature_files, TABLE_NAME, STOPLIST_FILE, freq_stop_list, conn)
 
 
     # Make notification

@@ -108,13 +108,13 @@ def evaluate_prediction_cityemd(MESHCODE_FILE_2ND, CITYEMD_DISTANCE_MATRIX_FILE,
 
         city_emd = emd(first_histogram, second_histogram, distance_matrix)
 
-        print(city_emd)
-        if city_emd > 0:
-            print(math.log(city_emd))
-
-        # print(f"CityEMD value at time {name}: {city_emd}")
+        # print(city_emd)
         # if city_emd > 0:
-        #     print(f"CityEMD Log value at time {name}: {math.log(city_emd)}")
+        #     print(math.log(city_emd))
+
+        print(f"CityEMD value at time {name}: {city_emd}")
+        if city_emd > 0:
+            print(f"CityEMD Log value at time {name}: {math.log(city_emd)}")
 
 
 def evaluate_dummy_cityemd(MESHCODE_FILE_2ND, CITYEMD_DISTANCE_MATRIX_FILE, X_OBSERVATION_FILE, Y_TRUE_FILE):
@@ -149,13 +149,13 @@ def evaluate_dummy_cityemd(MESHCODE_FILE_2ND, CITYEMD_DISTANCE_MATRIX_FILE, X_OB
 
         city_emd = emd(first_histogram, second_histogram, distance_matrix)
 
-        print(city_emd)
-        if city_emd > 0:
-            print(math.log(city_emd))
-
-        # print(f"CityEMD value at time {name}: {city_emd}")
+        # print(city_emd)
         # if city_emd > 0:
-        #     print(f"CityEMD Log value at time {name}: {math.log(city_emd)}")
+        #     print(math.log(city_emd))
+
+        print(f"CityEMD value at time {name}: {city_emd}")
+        if city_emd > 0:
+            print(f"CityEMD Log value at time {name}: {math.log(city_emd)}")
 
 
 if __name__ == '__main__':
@@ -168,7 +168,9 @@ if __name__ == '__main__':
     MESHCODE_FILE_2ND = s.MESHCODE_FILE_2ND
     CITYEMD_DISTANCE_MATRIX_FILE = s.CITYEMD_DISTANCE_MATRIX_FILE
 
+    logger.info('Calculating LSTM CityEMD (Raw -> Log)')
     evaluate_prediction_cityemd(MESHCODE_FILE_2ND, CITYEMD_DISTANCE_MATRIX_FILE, CSV_TRAJECTORY_FILE_EVALUATION_PREDICTED_GRID, CSV_TRAJECTORY_FILE_EVALUATION_TRUE_GRID)
+    logger.info('Calculating Dummy CityEMD (Raw -> Log)')
     evaluate_dummy_cityemd(MESHCODE_FILE_2ND, CITYEMD_DISTANCE_MATRIX_FILE, CSV_TRAJECTORY_FILE_EVALUATION_OBSERVATION_GRID, CSV_TRAJECTORY_FILE_EVALUATION_TRUE_GRID)
 
 
