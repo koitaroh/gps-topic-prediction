@@ -69,3 +69,4 @@ Refered Keras docker build.
             - This will upload output trajectory and figures to Dropbox.
     
     
+ `python -O` to disable assert.

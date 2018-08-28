@@ -46,7 +46,7 @@ def create_freq_stop_list_(table_name, stoplist, conn, n=100, min_freq=1):
                 fdist[word] += 1
     # print(f"Word frequency: {fdist}")
     common_words = {word for word, freq in fdist.most_common(n)}
-    print(f"{n} most common words: {common_words}")
+    # print(f"{n} most common words: {common_words}")
     rare_words = {word for word, freq in fdist.items() if freq <= min_freq}
     stopwords = common_words.union(rare_words)
     print(f'Stop words ratio to total words: {len(stopwords)}/{len(fdist)}')
@@ -232,7 +232,7 @@ if __name__ == '__main__':
     pool = mp.Pool(cores)
 
     temporal_index = utility_spatiotemporal_index.define_temporal_index(EXPERIMENT_PARAMETERS)
-    logger.info(temporal_index)
+    # logger.info(temporal_index)
     logger.info(len(temporal_index))
 
     engine, conn, metadata = utility_database.establish_db_connection_mysql_twitter_remote()
