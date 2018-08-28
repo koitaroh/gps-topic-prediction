@@ -235,7 +235,7 @@ if __name__ == '__main__':
     logger.info(temporal_index)
     logger.info(len(temporal_index))
 
-    engine, conn, metadata = utility_database.establish_db_connection_mysql_twitter()
+    engine, conn, metadata = utility_database.establish_db_connection_mysql_twitter_ssh()
 
     freq_stop_list = create_freq_stop_list_(TABLE_NAME, STOPLIST_FILE, conn, n=100, min_freq=1)
 
@@ -259,7 +259,7 @@ if __name__ == '__main__':
     topic_feature_files = {"lsi": LSI_TOPIC_FILE, "lda": LDA_TOPIC_FILE, "doc2vec": DOC2VEC_TOPIC_FILE}
 
     # Create topic features
-    engine, conn, metadata = utility_database.establish_db_connection_mysql_twitter()
+    engine, conn, metadata = utility_database.establish_db_connection_mysql_twitter_ssh()
     create_global_topic_features(models, dictionary, tfidf, temporal_index, EXPERIMENT_PARAMETERS, topic_feature_files, TABLE_NAME, STOPLIST_FILE, freq_stop_list, conn)
 
 
