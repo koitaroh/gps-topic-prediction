@@ -87,7 +87,7 @@ def create_corpora(token, dict_file_path, mm_corpora_file, tfidf_file):
     with open(dict_file_path, 'wb') as dict_file:
         dictionary = gensim.corpora.Dictionary(token)
         dictionary.save(dict_file)
-        print(dictionary)
+        # print(dictionary)
         # print(dictionary.token2id)
         # print(token)
 
