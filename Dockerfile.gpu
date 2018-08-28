@@ -65,7 +65,4 @@ RUN conda install -y python=${python_version} && \
 ENV PYTHONPATH='/src/:$PYTHONPATH'
 EXPOSE 6006 8888
 
-COPY docker-entrypoint.sh /usr/local/bin/
-ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
-
 CMD ["/bin/bash"]
