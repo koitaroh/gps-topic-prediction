@@ -88,7 +88,7 @@ def establish_db_connection_mysql_twitter_ssh():
 
 
 def establish_db_connection_mysql_twitter_remote():
-    ENGINE_CONF = "mysql+pymysql://" + DB_456_TWITTER["user"] + ":" + DB_456_TWITTER["passwd"] + "@" + DB_456_TWITTER["host"] + ":" + DB_456_TWITTER["db_name"] + "?charset=utf8mb4"
+    ENGINE_CONF = "mysql+pymysql://" + DB_456_TWITTER["user"] + ":" + DB_456_TWITTER["passwd"] + "@" + DB_456_TWITTER["host"] + "/" + DB_456_TWITTER["db_name"] + "?charset=utf8mb4"
     print(ENGINE_CONF)
     engine = sqlalchemy.create_engine(ENGINE_CONF, echo=False)
     conn = engine.connect()
