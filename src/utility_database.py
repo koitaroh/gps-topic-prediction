@@ -63,7 +63,7 @@ def establish_db_connection_postgresql_geotweet_ssh():
 
 
 def establish_db_connection_postgresql_geotweet_remote():
-    ENGINE_CONF = "postgresql://" + DB_456_GEOTWEET["user"] + ":" + DB_456_GEOTWEET["passwd"] + "@" + DB_456_GEOTWEET["host"] + ":5432/" + DB_456_GEOTWEET["db_name"]
+    ENGINE_CONF = "postgresql://" + DB_456_GEOTWEET["user"] + ":" + DB_456_GEOTWEET["passwd"] + "@host.docker.internal:5432/" + DB_456_GEOTWEET["db_name"]
     engine = sqlalchemy.create_engine(ENGINE_CONF)
     conn = engine.connect()
     metadata = sqlalchemy.MetaData(engine)
@@ -88,7 +88,7 @@ def establish_db_connection_mysql_twitter_ssh():
 
 
 def establish_db_connection_mysql_twitter_remote():
-    ENGINE_CONF = "mysql+pymysql://" + DB_456_TWITTER["user"] + ":" + DB_456_TWITTER["passwd"] + "@" + DB_456_TWITTER["host"] + ":3306/" + DB_456_TWITTER["db_name"] + "?charset=utf8mb4"
+    ENGINE_CONF = "mysql+pymysql://" + DB_456_TWITTER["user"] + ":" + DB_456_TWITTER["passwd"] + "@host.docker.internal:3306/" + DB_456_TWITTER["db_name"] + "?charset=utf8mb4"
     engine = sqlalchemy.create_engine(ENGINE_CONF, echo=False)
     conn = engine.connect()
     metadata = sqlalchemy.MetaData(engine)
