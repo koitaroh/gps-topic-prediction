@@ -1,3 +1,4 @@
+urllib3 == 1.21
 tensorflow-gpu == 1.9
 keras == 2.1
 h5py
@@ -18,4 +19,3 @@ dropbox == 9.0
 matplotlib
 pyemd
 sshtunnel
-urllib3 == 1.21
