@@ -45,8 +45,10 @@ def create_freq_stop_list_(table_name, stoplist, conn, n=100, min_freq=1):
             if word not in stoplist:
                 fdist[word] += 1
     # print(f"Word frequency: {fdist}")
+    common_words_reference = {word for word, freq in fdist.most_common(500)}
+    print(f"500 most common words: {common_words_reference}")
     common_words = {word for word, freq in fdist.most_common(n)}
-    print(f"{n} most common words: {common_words}")
+    # print(f"{n} most common words: {common_words}")
     rare_words = {word for word, freq in fdist.items() if freq <= min_freq}
     stopwords = common_words.union(rare_words)
     print(f'Stop words ratio to total words: {len(stopwords)}/{len(fdist)}')

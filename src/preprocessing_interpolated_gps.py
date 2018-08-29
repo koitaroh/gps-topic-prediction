@@ -86,6 +86,7 @@ def apply_slice_to_users_parallel(df_users_filtered: pd.DataFrame, temporal_indi
     # print(df_users_filtered.dtypes)
     grouped = df_users_filtered.groupby('uid')
     df_list = pool.starmap(apply_t_index, zip(grouped, repeat(temporal_indices), repeat(EXPERIMENT_PARAMETERS), repeat(topic_array)))
+    logger.info("Concatenating interpolated dataframes")
     df_users_regularized = pd.concat(df_list)
     return df_users_regularized
 
