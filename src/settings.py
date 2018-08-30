@@ -130,8 +130,8 @@ if EXPERIMENT_ENVIRONMENT == "remote":
         # 'INPUT_DATASET' : "iBank",
         'PREDICTION_INPUT_LENGTH': 144, # 144 for 12 hour in 10 mins
         'PREDICTION_OUTPUT_LENGTH': 6 , # 6 for 1 hour in 10 mins
-        'SAMPLE_USER_SIZE': 50000, # 10000 for 456, 100000 for dpdl4
-        'SAMPLE_SIZE' : 50000, #10000 for 456, 100000 for dpdl4
+        'SAMPLE_USER_SIZE': 30000, # 10000 for 456, 100000 for dpdl4
+        'SAMPLE_SIZE' : 30000, #10000 for 456, 100000 for dpdl4
 
         'TRAINING_OBSERVATION_START': "2012-07-25 07:00:00",
         'TRAINING_OBSERVATION_END': "2012-07-26 06:59:59",
@@ -139,7 +139,7 @@ if EXPERIMENT_ENVIRONMENT == "remote":
         'TRAINING_PREDICTION_END': "2012-07-26 07:59:59",
 
 
-        'EVALUATION_SAMPLE_SIZE': 50000,  # Sample size for visualization
+        'EVALUATION_SAMPLE_SIZE': 30000,  # Sample size for visualization
         'EVALUATION_OBSERVATION_START': "2012-07-25 07:00:00",
         'EVALUATION_OBSERVATION_END': "2012-07-26 06:59:59",
         'EVALUATION_PREDICTION_START': "2012-07-26 07:00:00",
