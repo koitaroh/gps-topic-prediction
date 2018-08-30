@@ -119,8 +119,8 @@ if EXPERIMENT_ENVIRONMENT == "remote":
     EXPERIMENT_PARAMETERS = {
         'EXPERIMENT_NAME': "Experiment_usual_10mins_24hours_20180828",
         # 'EXPERIMENT_NAME': "Experiment_20120725_20120725_5mins_25000users_2h_2layers",
-        'TIMESTART' : "2012-07-19 00:00:00",
-        'TIMEEND' : "2012-07-25 23:59:59",
+        'TIMESTART' : "2012-07-25 07:00:00",
+        'TIMEEND' : "2012-07-26 06:59:59",
         # aoi = [122.933198,24.045416,153.986939,45.522785] # Japan
         'AOI' : [138.72, 34.9, 140.87, 36.28],
         'UNIT_TEMPORAL' : 10,  # in minutes
