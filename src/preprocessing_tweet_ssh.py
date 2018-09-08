@@ -70,7 +70,7 @@ def load_tweets_to_dataframe_from_database(table_name, stoplist, freq_stop_list,
         words_token = gensim.utils.tokenize(words, lowercase=True, deacc=True, errors="ignore")
         words_token_list = []
         for word in words_token:
-            if word not in stoplist and word not in freq_stop_list:
+            # if word not in stoplist and word not in freq_stop_list:
                 words_token_list.append(word)
 
 
@@ -159,7 +159,7 @@ def create_global_topic_features(models, dictionary, tfidf, temporal_index, EXPE
                 words = row.words
                 words_token = gensim.utils.tokenize(words, lowercase=True, deacc=True, errors="ignore")
                 for word in words_token:
-                    if word not in stoplist and word not in freq_stop_list:
+                    # if word not in stoplist and word not in freq_stop_list:
                         words_token_list.append(word)
             # print(words_token_list)
         docs_token.append(words_token_list)

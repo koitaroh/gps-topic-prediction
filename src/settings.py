@@ -35,8 +35,8 @@ sc = SlackClient(SLACK_TOKEN)
 # EXPERIMENT_ENVIRONMENT = "local"
 EXPERIMENT_ENVIRONMENT = "remote"
 
-# SCENARIO = 'usual'
-SCENARIO = 'fireworks'
+SCENARIO = 'usual'
+# SCENARIO = 'fireworks'
 # SCENARIO = 'typhoon'
 ######
 
