@@ -35,8 +35,8 @@ sc = SlackClient(SLACK_TOKEN)
 # EXPERIMENT_ENVIRONMENT = "local"
 EXPERIMENT_ENVIRONMENT = "remote"
 
-# SCENARIO = 'usual'
-SCENARIO = 'fireworks'
+SCENARIO = 'usual'
+# SCENARIO = 'fireworks'
 # SCENARIO = 'typhoon'
 ######
 
@@ -122,7 +122,7 @@ if EXPERIMENT_ENVIRONMENT == "local":
 #################################################################
 if EXPERIMENT_ENVIRONMENT == "remote":
     EXPERIMENT_PARAMETERS = {
-        'EXPERIMENT_NAME': "Experiment_usual_10mins_24hours_20180911",
+        'EXPERIMENT_NAME': "Experiment_usual_20180912_0832",
         # 'EXPERIMENT_NAME': "Experiment_20120725_20120725_5mins_25000users_2h_2layers",
         # 'TIMESTART' : "2012-07-19 00:00:00",
         # 'TIMEEND' : "2012-07-25 23:59:59",
@@ -135,8 +135,8 @@ if EXPERIMENT_ENVIRONMENT == "remote":
         # 'INPUT_DATASET' : "iBank",
         'PREDICTION_INPUT_LENGTH': 144, # 144 for 12 hour in 10 mins
         'PREDICTION_OUTPUT_LENGTH': 6 , # 6 for 1 hour in 10 mins
-        'SAMPLE_USER_SIZE': 40000, # 10000 for 456, 100000 for dpdl4
-        'SAMPLE_SIZE' : 40000, #10000 for 456, 100000 for dpdl4
+        'SAMPLE_USER_SIZE': 30000, # 10000 for 456, 100000 for dpdl4
+        'SAMPLE_SIZE' : 30000, #10000 for 456, 100000 for dpdl4
 
         # 'TRAINING_OBSERVATION_START': "2012-07-25 07:00:00",
         # 'TRAINING_OBSERVATION_END': "2012-07-26 06:59:59",
@@ -151,7 +151,7 @@ if EXPERIMENT_ENVIRONMENT == "remote":
         # 'EVALUATION_PREDICTION_END': "2012-07-26 07:59:59",
 
         'VISUALIZATION_SAMPLE_SIZE': 200,  # Sample size for visualization
-        'VISUALIZATION_CSV_SAMPLE_SIZE': 40000,  # Sample size for visualization
+        'VISUALIZATION_CSV_SAMPLE_SIZE': 30000,  # Sample size for visualization
 
         # Transfer
         # 'TIMESTART': "2016-06-01 07:00:00",

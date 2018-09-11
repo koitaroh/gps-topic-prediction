@@ -231,8 +231,8 @@ def prediction_multiple_steps(model, X, y, X_mode, y_mode, X_topic, y_topic, le_
             y_true = y[:, i, :]
             y_mode_true = y_mode[:, i, :]
             y_topic_true = y_topic[:, i, :]
-            # y_predicted_s_indices = np.argmax(y_predicted, axis=1) # For selecting max
-            y_predicted_s_indices = np.array([*map(lambda p: np.random.choice(max_s_index, p=p), y_predicted)]) # For selecting as random sample
+            y_predicted_s_indices = np.argmax(y_predicted, axis=1) # For selecting max
+            # y_predicted_s_indices = np.array([*map(lambda p: np.random.choice(max_s_index, p=p), y_predicted)]) # For selecting as random sample
             y_predicted_s_indices = y_predicted_s_indices.reshape((-1, 1))
             y_predicted_latlon = convert_spatial_index_array_to_coordinate_array(y_predicted_s_indices, le_grid)
             y_true_latlon = convert_spatial_index_array_to_coordinate_array(y_true, le_grid)
@@ -255,8 +255,8 @@ def prediction_multiple_steps(model, X, y, X_mode, y_mode, X_topic, y_topic, le_
             y_mode_true = y_mode[:, i, :]
             y_topic_true = y_topic[:, i, :]
             y_predicted = model.predict([X_middle_step, X_mode_middle_step, X_topic_middle_step])
-            # y_predicted_s_indices = np.argmax(y_predicted, axis=1) # For selecting max
-            y_predicted_s_indices = np.array([*map(lambda p: np.random.choice(max_s_index, p=p), y_predicted)])  # For selecting as random sample
+            y_predicted_s_indices = np.argmax(y_predicted, axis=1) # For selecting max
+            # y_predicted_s_indices = np.array([*map(lambda p: np.random.choice(max_s_index, p=p), y_predicted)])  # For selecting as random sample
             y_predicted_s_indices = y_predicted_s_indices.reshape((-1, 1))
             y_predicted_latlon = convert_spatial_index_array_to_coordinate_array(y_predicted_s_indices, le_grid)
             y_true_latlon = convert_spatial_index_array_to_coordinate_array(y_true, le_grid)
@@ -270,8 +270,8 @@ def prediction_multiple_steps(model, X, y, X_mode, y_mode, X_topic, y_topic, le_
             y_true = y[:, i, :]
             y_mode_true = y_mode[:, i, :]
             y_topic_true = y_topic[:, i, :]
-            # y_predicted_s_indices = np.argmax(y_predicted, axis=1) # For selecting max
-            y_predicted_s_indices = np.array([*map(lambda p: np.random.choice(max_s_index, p=p), y_predicted)])  # For selecting as random sample
+            y_predicted_s_indices = np.argmax(y_predicted, axis=1) # For selecting max
+            # y_predicted_s_indices = np.array([*map(lambda p: np.random.choice(max_s_index, p=p), y_predicted)])  # For selecting as random sample
             y_predicted_s_indices = y_predicted_s_indices.reshape((-1, 1))
             y_predicted_latlon = convert_spatial_index_array_to_coordinate_array(y_predicted_s_indices, le_grid)
             y_true_latlon = convert_spatial_index_array_to_coordinate_array(y_true, le_grid)
