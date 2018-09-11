@@ -115,6 +115,7 @@ def evaluate_prediction_cityemd(MESHCODE_FILE_2ND, CITYEMD_DISTANCE_MATRIX_FILE,
         print(f"CityEMD value at time {name}: {city_emd}")
         if city_emd > 0:
             print(f"CityEMD Log value at time {name}: {math.log(city_emd)}")
+            logger.info(math.log(city_emd))
 
 
 def evaluate_dummy_cityemd(MESHCODE_FILE_2ND, CITYEMD_DISTANCE_MATRIX_FILE, X_OBSERVATION_FILE, Y_TRUE_FILE):
@@ -156,6 +157,7 @@ def evaluate_dummy_cityemd(MESHCODE_FILE_2ND, CITYEMD_DISTANCE_MATRIX_FILE, X_OB
         print(f"CityEMD value at time {name}: {city_emd}")
         if city_emd > 0:
             print(f"CityEMD Log value at time {name}: {math.log(city_emd)}")
+            logger.info(math.log(city_emd))
 
 
 if __name__ == '__main__':

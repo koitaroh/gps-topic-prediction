@@ -80,6 +80,32 @@ def upload_dir_to_dropbox(dir, path_in_dropbox):
     return None
 
 
+def upload_file_to_dropbox(filepath, path_in_dropbox):
+    ACCESS_TOKEN = "vzhi0bre3NIAAAAAAADXopLD634TYIaIXdW5DA7DG0vn2c-iKp1nRI_8OL7FfXn1"
+    dbx = dropbox.Dropbox(ACCESS_TOKEN)
+    dbx.users_get_current_account()
+
+    with open(filepath, 'rb') as f:
+        # We use WriteMode=overwrite to make sure that the settings in the file
+        # are changed on upload
+        print("Uploading log file to Dropbox as " + path_in_dropbox + "log.log")
+        try:
+            dbx.files_upload(f.read(), path_in_dropbox+"log.log", mode=WriteMode('overwrite'))
+        except ApiError as err:
+            # This checks for the specific error where a user doesn't have
+            # enough Dropbox space quota to upload this file
+            if (err.error.is_path() and
+                    err.error.get_path().reason.is_insufficient_space()):
+                sys.exit("ERROR: Cannot back up; insufficient space.")
+            elif err.user_message_text:
+                print(err.user_message_text)
+                sys.exit()
+            else:
+                print(err)
+                sys.exit()
+    return None
+
+
 if __name__ == '__main__':
     TEST_DIR = "/Users/koitaroh/Downloads/training/"
     TEST_DROPBOX_PATH = "/training/"
@@ -92,3 +118,4 @@ if __name__ == '__main__':
     upload_dir_to_dropbox(FIGURE_DIR, "/" + EXPERIMENT_PARAMETERS["EXPERIMENT_NAME"] + "/figures/")
     upload_dir_to_dropbox(TRAINING_DIR, "/" + EXPERIMENT_PARAMETERS["EXPERIMENT_NAME"] + "/training/")
     upload_dir_to_dropbox(EVALUATION_DIR, "/" + EXPERIMENT_PARAMETERS["EXPERIMENT_NAME"] + "/evaluation/")
+    upload_file_to_dropbox("log.log", "/" + EXPERIMENT_PARAMETERS["EXPERIMENT_NAME"] + "/log/")

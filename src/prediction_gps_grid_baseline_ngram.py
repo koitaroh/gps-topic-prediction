@@ -82,6 +82,8 @@ def predict(X_test, y_test, gram4):
     print(f'Accuracy: {acc}.')
     print(f'Accuracy without unlearned: {acc_2}.')
 
+    logger.info(acc)
+
 
 if __name__ == '__main__':
     slack_client = s.sc
