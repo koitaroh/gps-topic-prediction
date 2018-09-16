@@ -122,7 +122,7 @@ if EXPERIMENT_ENVIRONMENT == "local":
 #################################################################
 if EXPERIMENT_ENVIRONMENT == "remote":
     EXPERIMENT_PARAMETERS = {
-        'EXPERIMENT_NAME': "Experiment_usual_20180915_1656",
+        'EXPERIMENT_NAME': "Experiment_usual_20180916_2345",
         # 'EXPERIMENT_NAME': "Experiment_20120725_20120725_5mins_25000users_2h_2layers",
         # 'TIMESTART' : "2012-07-19 00:00:00",
         # 'TIMEEND' : "2012-07-25 23:59:59",

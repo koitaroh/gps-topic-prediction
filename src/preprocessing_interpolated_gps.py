@@ -236,7 +236,7 @@ if __name__ == '__main__':
     temporal_index = utility_spatiotemporal_index.define_temporal_index(EXPERIMENT_PARAMETERS)
     spatial_index = utility_spatiotemporal_index.define_spatial_index(EXPERIMENT_PARAMETERS)
 
-    topic_array = np.load(DOC2VEC_TOPIC_FILE) # Change for changing topic models
+    topic_array = np.load(LSI_TOPIC_FILE) # Change for changing topic models
 
     # Load CSV files
     df_all_users = utility_io.load_csv_files_to_dataframe(GPS_RAW_DIR, EXPERIMENT_PARAMETERS)
