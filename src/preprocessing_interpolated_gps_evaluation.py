@@ -259,7 +259,7 @@ if __name__ == '__main__':
     pool = mp.Pool(cores)
 
     temporal_index = utility_spatiotemporal_index.define_temporal_index_evaluation(EXPERIMENT_PARAMETERS)
-    topic_array = np.load(LSI_TOPIC_EVALUATION_FILE)
+    topic_array = np.load(LDA_TOPIC_EVALUATION_FILE)
 
     df_all_users = utility_io.load_csv_files_to_dataframe_evaluation(GPS_RAW_DIR, EXPERIMENT_PARAMETERS)
     df_user_filtered = filter_users_with_experiment_setting(df_all_users, EXPERIMENT_PARAMETERS)
