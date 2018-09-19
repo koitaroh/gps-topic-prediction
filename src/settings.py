@@ -35,8 +35,8 @@ sc = SlackClient(SLACK_TOKEN)
 # EXPERIMENT_ENVIRONMENT = "local"
 EXPERIMENT_ENVIRONMENT = "remote"
 
-# SCENARIO = 'usual'
-SCENARIO = 'fireworks'
+SCENARIO = 'usual'
+# SCENARIO = 'fireworks'
 # SCENARIO = 'typhoon'
 ######
 
@@ -122,7 +122,7 @@ if EXPERIMENT_ENVIRONMENT == "local":
 #################################################################
 if EXPERIMENT_ENVIRONMENT == "remote":
     EXPERIMENT_PARAMETERS = {
-        'EXPERIMENT_NAME': "Experiment_fireworks_20180918_1458",
+        'EXPERIMENT_NAME': "Experiment_usual_20180919_2245",
         # 'EXPERIMENT_NAME': "Experiment_20120725_20120725_5mins_25000users_2h_2layers",
         # 'TIMESTART' : "2012-07-19 00:00:00",
         # 'TIMEEND' : "2012-07-25 23:59:59",
