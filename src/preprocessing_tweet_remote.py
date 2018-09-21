@@ -32,7 +32,7 @@ import jpgrid
 import utility_spatiotemporal_index
 
 
-def create_freq_stop_list_(table_name, stoplist, conn, n=100, min_freq=1):
+def create_freq_stop_list_(table_name, stoplist, conn, n=50, min_freq=1): # n was 100
     logger.info("Loading tweets to dataframe for freq stop list")
     fdist = Counter()
     sql = "Select id, words from %s where words is not NULL and x is not NULL;" % table_name
