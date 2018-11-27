@@ -35,7 +35,8 @@ Refered Keras docker build.
 1. git pull
 2. Build docker image
     - (optional) git pull to update codes
-2. pip install -r requirements_gpu.txt
+2. `pip install -r requirements_gpu.txt`
+3. `while read requirement; do conda install --yes $requirement; done < requirements_gpu.txt`
 
 
 ## Run code
