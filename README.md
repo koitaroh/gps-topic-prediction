@@ -32,6 +32,11 @@ Human mobility prediction with GPS and Twitter
 ## Set up environment
 Refered Keras docker build.
 
+1. git pull
+2. Build docker image
+    - (optional) git pull to update codes
+2. pip install -r requirements_gpu.txt
+
 
 ## Run code
 
@@ -70,3 +75,6 @@ Refered Keras docker build.
     
     
  `python -O` to disable assert.
+ assert (0.0 <= img).all() and (img <= 1.0).all()
+ assert img.ndim == 3
+ assert img.shape[0] == img.shape[1], "widthとheightの値は同じにしてね"
