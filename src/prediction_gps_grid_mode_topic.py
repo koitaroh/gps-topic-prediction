@@ -1,34 +1,27 @@
-import requests
-import json
-import csv
-import os
-import time
-from datetime import datetime, timedelta
-import math
 import atexit
 import random
-import sqlalchemy
+
 import geojson
-from geojson import LineString, FeatureCollection, Feature
-import pandas
-import pickle
+import matplotlib
 import numpy as np
-import tensorflow as tf
-import h5py
+from geojson import Feature
+from geojson import FeatureCollection
+from geojson import LineString
 from geopy.distance import vincenty
-from keras.preprocessing import sequence
-from keras.utils import np_utils
-from keras.models import Sequential, load_model, Model
-from keras.layers import Input, LSTM, SimpleRNN, GRU, Concatenate, Dense, Dropout, Activation, Embedding, TimeDistributed, Flatten
-from keras.utils import plot_model
-from sklearn.preprocessing import MinMaxScaler
-from sklearn.metrics import mean_squared_error
-from keras.callbacks import EarlyStopping, TensorBoard, ModelCheckpoint
-from sklearn.preprocessing import MinMaxScaler, StandardScaler, LabelBinarizer, LabelEncoder
-from sklearn.model_selection import train_test_split, StratifiedKFold
+from keras.callbacks import EarlyStopping
+from keras.layers import Concatenate
+from keras.layers import Dense
+from keras.layers import Embedding
+from keras.layers import Flatten
+from keras.layers import Input
+from keras.layers import LSTM
+from keras.models import Model
+from keras.models import load_model
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import LabelBinarizer
+from sklearn.preprocessing import LabelEncoder
 from tqdm import tqdm
 
-import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
@@ -50,8 +43,6 @@ logger.info('Initializing %s', __name__)
 
 import settings as s
 import load_dataset
-import jpgrid
-import utility_io
 import utility_spatiotemporal_index
 
 np.random.seed(1)
@@ -117,8 +108,10 @@ def convert_spatial_index_array_to_coordinate_array(input_array, le_grid, Multis
         # print(input_array)
         x_array = np.apply_along_axis(np.vectorize(utility_spatiotemporal_index.convert_spatial_index_to_longitude), 0, input_array)
         y_array = np.apply_along_axis(np.vectorize(utility_spatiotemporal_index.convert_spatial_index_to_latitude), 0, input_array)
-        latlon_array = np.concatenate((y_array, x_array), axis=1)
-        # print(latlon_array)
+        # x_array = x_array.reshape(-1, 1)
+        # y_array = y_array.reshape(-1, 1)
+        # latlon_array = np.concatenate((y_array, x_array), axis=1)
+        latlon_array = np.column_stack((y_array, x_array))
     return latlon_array
 
 
@@ -150,8 +143,8 @@ def training_lstm_grid(X_train, y_train, X_test, y_test, X_mode_train, X_mode_te
     history = model.fit([X_train, X_mode_train, X_topic_train], y_train, batch_size=50, epochs=50, validation_data=([X_test, X_mode_test, X_topic_test], y_test_one_step), callbacks=[es_cb])
     # history = model.fit(X_train, y_train, batch_size=50, epochs=50, validation_data=(X_test, y_test))
 
-    model.save(MODEL_FILE)
-    model.save_weights(MODEL_WEIGHT_FILE_LSTM_GRID)
+    model.save(str(MODEL_FILE))
+    model.save_weights(str(MODEL_WEIGHT_FILE_LSTM_GRID))
 
     loss, accuracy, sparse_top_k_accuracy = model.evaluate([X_test, X_mode_test, X_topic_test], y_test_one_step, batch_size=300)
 
@@ -405,10 +398,10 @@ if __name__ == '__main__':
     # print(X_train)
 
     # Train model
-    lstm_model = training_lstm_grid(X_train, y_train, X_test, y_test, X_mode_train, X_mode_test, y_mode_train, y_mode_test, X_topic_train, X_topic_test, y_topic_train, y_topic_test, EXPERIMENT_PARAMETERS, max_s_index, MODEL_FILE_LSTM_GRID, MODEL_WEIGHT_FILE_LSTM_GRID, FIGURE_DIR)
+    # lstm_model = training_lstm_grid(X_train, y_train, X_test, y_test, X_mode_train, X_mode_test, y_mode_train, y_mode_test, X_topic_train, X_topic_test, y_topic_train, y_topic_test, EXPERIMENT_PARAMETERS, max_s_index, MODEL_FILE_LSTM_GRID, MODEL_WEIGHT_FILE_LSTM_GRID, FIGURE_DIR)
 
     # Load model
-    lstm_model = load_model(MODEL_FILE_LSTM_GRID)
+    lstm_model = load_model(str(MODEL_FILE_LSTM_GRID))
 
     # test with train set!
     # y_predicted_sequence = prediction_multiple_steps(lstm_model, X_train, y_train, X_mode_train, y_mode_train, X_topic_train,
