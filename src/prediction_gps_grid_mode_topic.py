@@ -398,7 +398,7 @@ if __name__ == '__main__':
     # print(X_train)
 
     # Train model
-    # lstm_model = training_lstm_grid(X_train, y_train, X_test, y_test, X_mode_train, X_mode_test, y_mode_train, y_mode_test, X_topic_train, X_topic_test, y_topic_train, y_topic_test, EXPERIMENT_PARAMETERS, max_s_index, MODEL_FILE_LSTM_GRID, MODEL_WEIGHT_FILE_LSTM_GRID, FIGURE_DIR)
+    lstm_model = training_lstm_grid(X_train, y_train, X_test, y_test, X_mode_train, X_mode_test, y_mode_train, y_mode_test, X_topic_train, X_topic_test, y_topic_train, y_topic_test, EXPERIMENT_PARAMETERS, max_s_index, MODEL_FILE_LSTM_GRID, MODEL_WEIGHT_FILE_LSTM_GRID, FIGURE_DIR)
 
     # Load model
     lstm_model = load_model(str(MODEL_FILE_LSTM_GRID))

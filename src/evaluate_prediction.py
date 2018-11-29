@@ -1,40 +1,15 @@
-import requests
-import json
 import csv
-import os
-import time
 import atexit
+import csv
 import random
-import sqlalchemy
-import geojson
-from geojson import LineString, FeatureCollection, Feature
-import pandas
-import pickle
+import matplotlib
 import numpy as np
-import tensorflow as tf
-import h5py
-from geopy.distance import vincenty
-from datetime import datetime, timedelta
-# from sshtunnel import SSHTunnelForwarder #Run pip install sshtunnel
-from sqlalchemy.orm import sessionmaker #Run pip install sqlalchemy
-import math
-from keras.layers.wrappers import TimeDistributed
-from keras.preprocessing import sequence
-from keras.utils import np_utils
-from keras.models import Sequential, load_model, Model
-from keras.layers import Input, LSTM, SimpleRNN, GRU, Concatenate, Dense, Dropout, Activation, Embedding, TimeDistributed, Flatten
-from keras.datasets import imdb
-from keras.utils import plot_model
-from sklearn.preprocessing import MinMaxScaler
-from sklearn.metrics import mean_squared_error
-from keras.callbacks import EarlyStopping, TensorBoard, ModelCheckpoint
-from sklearn.preprocessing import MinMaxScaler, StandardScaler, LabelBinarizer, LabelEncoder
-from sklearn.model_selection import train_test_split
+from keras.models import load_model
+from sklearn.preprocessing import LabelBinarizer
+from sklearn.preprocessing import LabelEncoder
 from tqdm import tqdm
 
-import matplotlib
 matplotlib.use('Agg')
-import matplotlib.pyplot as plt
 
 # Logging ver. 2017-12-14
 import logging
@@ -53,9 +28,6 @@ logger.addHandler(ch)
 logger.info('Initializing %s', __name__)
 
 import settings as s
-import load_dataset
-import jpgrid
-import utility_io
 import utility_spatiotemporal_index
 import prediction_gps_grid_mode_topic
 
@@ -155,7 +127,8 @@ def convert_spatial_index_array_to_coordinate_array(input_array, le_grid, Multis
         # print(input_array)
         x_array = np.apply_along_axis(np.vectorize(utility_spatiotemporal_index.convert_spatial_index_to_longitude), 0, input_array)
         y_array = np.apply_along_axis(np.vectorize(utility_spatiotemporal_index.convert_spatial_index_to_latitude), 0, input_array)
-        latlon_array = np.concatenate((y_array, x_array), axis=1)
+        # latlon_array = np.concatenate((y_array, x_array), axis=1)
+        latlon_array = np.column_stack((y_array, x_array))
         # print(latlon_array)
     return latlon_array
 
