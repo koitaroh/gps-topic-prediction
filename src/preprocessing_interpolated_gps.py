@@ -46,6 +46,7 @@ def filter_users_with_experiment_setting(DATAFRAME, EXPERIMENT_PARAMETERS):
     grouped = df_users_filtered.groupby('uid')
     num_user = len(grouped)
     logger.info("Number of uid after spatial filter: %s" % num_user)
+    assert num_user > 0, 'Number of uid is zero.'
 
     if EXPERIMENT_PARAMETERS['SAMPLE_USER_SIZE'] <= num_user:
         num_user = EXPERIMENT_PARAMETERS['SAMPLE_USER_SIZE']
