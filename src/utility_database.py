@@ -44,6 +44,13 @@ DB_456_TWITTER = {
     "db_name": conf.get('456_mysql', 'db_name'),
 }
 
+DB_AWS_GEOTWEET = {
+    "host": conf.get('AWS_geotweet', 'host'),
+    "user": conf.get('AWS_geotweet', 'user'),
+    "passwd": conf.get('AWS_geotweet', 'passwd'),
+    "db_name": conf.get('AWS_geotweet', 'db_name'),
+}
+
 
 def establish_db_connection_postgresql_geotweet_ssh():
     server = sshtunnel.SSHTunnelForwarder(
@@ -64,6 +71,14 @@ def establish_db_connection_postgresql_geotweet_ssh():
 
 def establish_db_connection_postgresql_geotweet_remote():
     ENGINE_CONF = "postgresql://" + DB_456_GEOTWEET["user"] + ":" + DB_456_GEOTWEET["passwd"] + "@" + DB_456_GEOTWEET["host"] + ":" + DB_456_GEOTWEET["db_name"]
+    engine = sqlalchemy.create_engine(ENGINE_CONF)
+    conn = engine.connect()
+    metadata = sqlalchemy.MetaData(engine)
+    return engine, conn, metadata
+
+
+def establish_db_connection_postgresql_geotweet_rds():
+    ENGINE_CONF = "postgresql://" + DB_AWS_GEOTWEET["user"] + ":" + DB_AWS_GEOTWEET["passwd"] + "@" + DB_AWS_GEOTWEET["host"] + ":" + DB_AWS_GEOTWEET["db_name"]
     engine = sqlalchemy.create_engine(ENGINE_CONF)
     conn = engine.connect()
     metadata = sqlalchemy.MetaData(engine)
