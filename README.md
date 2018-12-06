@@ -51,7 +51,7 @@ Refered Keras docker build.
     1. Embedding
         1. Run `preprocessing_embedding.py`
     2. Twitter
-        1. Run `preprocessing_tweet.py`
+        1. Run `preprocessing_tweet.py` (choose _ssh or _remote depending on the environment)
         2. Run `preprocessing_tweet_evaluation.py`
     3. GPS (mobile phones)
         1. Run `preprocessing_gps.py`
