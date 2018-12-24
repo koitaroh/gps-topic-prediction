@@ -261,7 +261,7 @@ if __name__ == '__main__':
     topic_feature_files = {"lsi": LSI_TOPIC_FILE, "lda": LDA_TOPIC_FILE, "doc2vec": DOC2VEC_TOPIC_FILE}
 
     # Create topic features
-    engine, conn, metadata = utility_database.establish_db_connection_mysql_twitter_remote()
+    engine, conn, metadata = utility_database.establish_db_connection_postgresql_geotweet_rds()
     create_global_topic_features(models, dictionary, tfidf, temporal_index, EXPERIMENT_PARAMETERS, topic_feature_files, TABLE_NAME, STOPLIST_FILE, freq_stop_list, conn)
 
 
