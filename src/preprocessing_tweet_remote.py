@@ -237,7 +237,7 @@ if __name__ == '__main__':
     # logger.info(temporal_index)
     logger.info(len(temporal_index))
 
-    engine, conn, metadata = utility_database.establish_db_connection_mysql_twitter_remote()
+    engine, conn, metadata = utility_database.establish_db_connection_postgresql_geotweet_rds()
 
     freq_stop_list = create_freq_stop_list_(TABLE_NAME, STOPLIST_FILE, conn, n=100, min_freq=1)
 
