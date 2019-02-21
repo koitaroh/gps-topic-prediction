@@ -1,4 +1,3 @@
-Keras
 tensorflow
 h5py
 pymysql
@@ -18,3 +17,6 @@ dropbox
 matplotlib
 pyemd
 sshtunnel
+folium
+geopandas
+seaborn
