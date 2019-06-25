@@ -31,11 +31,18 @@ ENV PATH $CONDA_DIR/bin:$PATH
 #     rm Miniconda3-4.5.11-Linux-x86_64.sh && \
 #     echo export PATH=$CONDA_DIR/bin:'$PATH' > /etc/profile.d/conda.sh
 
-RUN wget --quiet --no-check-certificate https://repo.continuum.io/miniconda/Miniconda2-4.6.14-Linux-x86_64.sh && \
-    echo "faa7cb0b0c8986ac3cacdbbd00fe4168 *Miniconda3-4.6.14-Linux-x86_64.sh" | sha256sum -c - && \
-    /bin/bash /Miniconda3-4.6.14-Linux-x86_64.sh -f -b -p $CONDA_DIR && \
-    rm Miniconda3-4.6.14-Linux-x86_64.sh && \
-    echo export PATH=$CONDA_DIR/bin:'$PATH' > /etc/profile.d/conda.sh
+# RUN wget --quiet --no-check-certificate https://repo.continuum.io/miniconda/Miniconda2-4.6.14-Linux-x86_64.sh && \
+#     echo "faa7cb0b0c8986ac3cacdbbd00fe4168 *Miniconda3-4.6.14-Linux-x86_64.sh" | sha256sum -c - && \
+#     /bin/bash /Miniconda3-4.6.14-Linux-x86_64.sh -f -b -p $CONDA_DIR && \
+#     rm Miniconda3-4.6.14-Linux-x86_64.sh && \
+#     echo export PATH=$CONDA_DIR/bin:'$PATH' > /etc/profile.d/conda.sh
+
+RUN wget --quiet https://repo.continuum.io/miniconda/Miniconda2-4.6.14-Linux-x86_64.sh -O ~/miniconda.sh && \
+    /bin/bash ~/miniconda.sh -b -p /opt/conda && \
+    rm ~/miniconda.sh && \
+    ln -s /opt/conda/etc/profile.d/conda.sh /etc/profile.d/conda.sh && \
+    echo ". /opt/conda/etc/profile.d/conda.sh" >> ~/.bashrc && \
+    echo "conda activate base" >> ~/.bashrc
 
 # ENV NB_USER koitaroh
 # ENV NB_UID 1000
