@@ -189,6 +189,12 @@ if EXPERIMENT_ENVIRONMENT == "remote":
     TEST_DB_TABLE_NAME = "gps_log_2"
 #################################################################
 
+# MODEL parameter prototyping notes
+MODEL = {
+    "dropout": 0.2,
+    "num_layer": 2,
+}
+
 
 # Scenarios
 if SCENARIO == 'usual':

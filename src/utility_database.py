@@ -69,12 +69,12 @@ def establish_db_connection_postgresql_geotweet_ssh():
     return engine, conn, metadata
 
 
-# def establish_db_connection_postgresql_geotweet_remote():
-#     ENGINE_CONF = "postgresql://" + DB_456_GEOTWEET["user"] + ":" + DB_456_GEOTWEET["passwd"] + "@" + DB_456_GEOTWEET["host"] + ":" + DB_456_GEOTWEET["db_name"]
-#     engine = sqlalchemy.create_engine(ENGINE_CONF)
-#     conn = engine.connect()
-#     metadata = sqlalchemy.MetaData(engine)
-#     return engine, conn, metadata
+def establish_db_connection_postgresql_geotweet_remote():
+    ENGINE_CONF = "postgresql://" + DB_456_GEOTWEET["user"] + ":" + DB_456_GEOTWEET["passwd"] + "@" + DB_456_GEOTWEET["host"] + "/" + DB_456_GEOTWEET["db_name"]
+    engine = sqlalchemy.create_engine(ENGINE_CONF)
+    conn = engine.connect()
+    metadata = sqlalchemy.MetaData(engine)
+    return engine, conn, metadata
 
 
 def establish_db_connection_postgresql_geotweet_rds():
@@ -85,21 +85,21 @@ def establish_db_connection_postgresql_geotweet_rds():
     return engine, conn, metadata
 
 
-# def establish_db_connection_mysql_twitter_ssh():
-#     server = sshtunnel.SSHTunnelForwarder(
-#         (SSH_456['host'], 22),
-#         ssh_username = SSH_456['user'],
-#         ssh_pkey= SSH_456['key_path'],
-#         remote_bind_address=('localhost', 3306))
-#     server.start() #start ssh sever
-#     logger.info('Server connected via SSH')
-#     local_port = str(server.local_bind_port)
-#     # print(local_port)
-#     ENGINE_CONF = "mysql+pymysql://" + DB_456_TWITTER["user"] + ":" + DB_456_TWITTER["passwd"] + "@" + DB_456_TWITTER["host"] + ":" + local_port +"/" + DB_456_TWITTER["db_name"] + "?charset=utf8mb4"
-#     engine = sqlalchemy.create_engine(ENGINE_CONF, echo=False)
-#     conn = engine.connect()
-#     metadata = sqlalchemy.MetaData(engine)
-#     return engine, conn, metadata
+def establish_db_connection_mysql_twitter_ssh():
+    server = sshtunnel.SSHTunnelForwarder(
+        (SSH_456['host'], 22),
+        ssh_username = SSH_456['user'],
+        ssh_pkey= SSH_456['key_path'],
+        remote_bind_address=('localhost', 3306))
+    server.start() #start ssh sever
+    logger.info('Server connected via SSH')
+    local_port = str(server.local_bind_port)
+    # print(local_port)
+    ENGINE_CONF = "mysql+pymysql://" + DB_456_TWITTER["user"] + ":" + DB_456_TWITTER["passwd"] + "@" + DB_456_TWITTER["host"] + ":" + local_port +"/" + DB_456_TWITTER["db_name"] + "?charset=utf8mb4"
+    engine = sqlalchemy.create_engine(ENGINE_CONF, echo=False)
+    conn = engine.connect()
+    metadata = sqlalchemy.MetaData(engine)
+    return engine, conn, metadata
 #
 #
 # def establish_db_connection_mysql_twitter_remote():
