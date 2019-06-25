@@ -21,3 +21,4 @@ sshtunnel
 psycopg2
 geopandas
 geopy
+shapely

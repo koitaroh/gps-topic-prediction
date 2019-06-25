@@ -79,7 +79,8 @@ if __name__ == '__main__':
     """
 
     gps_gdf = pd.read_sql_query(sql, conn, parse_dates=['timestamp_from'])
-    gps_gdf = gpd.GeoDataFrame(gps_gdf, geometry=gpd.points_from_xy(gps_gdf.longitude, gps_gdf.latitude))
+    # gps_gdf = gpd.GeoDataFrame(gps_gdf, geometry=gpd.points_from_xy(gps_gdf.longitude, gps_gdf.latitude)) # For geopandas 0.5.0 or later
+    gps_gdf = gpd.GeoDataFrame(gps_gdf, geometry=[Point(x, y) for x, y in zip(gps_gdf.longitude, gps_gdf.latitude)]) # For geopandas 0.4.0
 
     gps_gdf_group = gps_gdf.groupby("uid", as_index=False)
     for name, group in tqdm(gps_gdf_group):
