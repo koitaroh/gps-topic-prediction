@@ -53,6 +53,8 @@ def nearest(items, pivot):
 
 if __name__ == '__main__':
     EXPERIMENT_PARAMETERS = s.EXPERIMENT_PARAMETERS
+    EXPERIMENT_ENVIRONMENT = s.EXPERIMENT_ENVIRONMENT
+
     dt_observation_start = pd.to_datetime(EXPERIMENT_PARAMETERS['TRAINING_OBSERVATION_START'])
     dt_observation_end = pd.to_datetime(EXPERIMENT_PARAMETERS['TRAINING_OBSERVATION_END'])
     dt_prediction_start = pd.to_datetime(EXPERIMENT_PARAMETERS['TRAINING_PREDICTION_START'])
@@ -60,8 +62,10 @@ if __name__ == '__main__':
 
     slack_client = s.sc
 
-    # engine, conn, metadata = utility_database.establish_db_connection_postgresql_geotweet_ssh()
-    engine, conn, metadata = utility_database.establish_db_connection_postgresql_geotweet_remote()
+    if EXPERIMENT_ENVIRONMENT == "remote":
+        engine, conn, metadata = utility_database.establish_db_connection_postgresql_geotweet_remote()
+    if EXPERIMENT_ENVIRONMENT == "local":
+        engine, conn, metadata = utility_database.establish_db_connection_postgresql_geotweet_ssh()
 
     profile_list = []
 
@@ -71,7 +75,7 @@ if __name__ == '__main__':
         where (latitude between {EXPERIMENT_PARAMETERS['AOI'][1]} and {EXPERIMENT_PARAMETERS['AOI'][3]}) 
         and (longitude between {EXPERIMENT_PARAMETERS['AOI'][0]} and {EXPERIMENT_PARAMETERS['AOI'][2]})
         and timestamp_from between '{EXPERIMENT_PARAMETERS['TRAINING_OBSERVATION_START']}' and '{EXPERIMENT_PARAMETERS['TRAINING_PREDICTION_END']}'
-        limit 10000000
+        limit 100000000
     """
 
     gps_gdf = pd.read_sql_query(sql, conn, parse_dates=['timestamp_from'])
