@@ -44,12 +44,12 @@ DB_456_TWITTER = {
     "db_name": conf.get('456_mysql', 'db_name'),
 }
 
-DB_AWS_GEOTWEET = {
-    "host": conf.get('AWS_geotweet', 'host'),
-    "user": conf.get('AWS_geotweet', 'user'),
-    "passwd": conf.get('AWS_geotweet', 'passwd'),
-    "db_name": conf.get('AWS_geotweet', 'db_name'),
-}
+# DB_AWS_GEOTWEET = {
+#     "host": conf.get('AWS_geotweet', 'host'),
+#     "user": conf.get('AWS_geotweet', 'user'),
+#     "passwd": conf.get('AWS_geotweet', 'passwd'),
+#     "db_name": conf.get('AWS_geotweet', 'db_name'),
+# }
 
 
 def establish_db_connection_postgresql_geotweet_ssh():

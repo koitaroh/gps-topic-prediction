@@ -60,8 +60,8 @@ if __name__ == '__main__':
 
     slack_client = s.sc
 
-    engine, conn, metadata = utility_database.establish_db_connection_postgresql_geotweet_ssh()
-    engine, conn, metadata = utility_database.establish_db_connection_postgresql_geotweet_ssh()
+    # engine, conn, metadata = utility_database.establish_db_connection_postgresql_geotweet_ssh()
+    engine, conn, metadata = utility_database.establish_db_connection_postgresql_geotweet_remote()
 
     profile_list = []
 
