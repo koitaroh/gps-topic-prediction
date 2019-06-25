@@ -13,8 +13,12 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
       libgl1-mesa-glx \
       libhdf5-dev \
       openmpi-bin \
+      libpq-dev \
       tmux \
       wget \
+      postgresql \
+      postgresql-contrib \
+      postgis \
       language-pack-ja-base \
       language-pack-ja && \
     rm -rf /var/lib/apt/lists/*
