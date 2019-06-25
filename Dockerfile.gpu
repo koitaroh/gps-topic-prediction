@@ -25,10 +25,16 @@ ENV LANG=ja_JP.UTF-8
 ENV CONDA_DIR /opt/conda
 ENV PATH $CONDA_DIR/bin:$PATH
 
-RUN wget --quiet --no-check-certificate https://repo.continuum.io/miniconda/Miniconda3-4.5.11-Linux-x86_64.sh && \
-    echo "e1045ee415162f944b6aebfe560b8fee *Miniconda3-4.5.11-Linux-x86_64.sh" | sha256sum -c - && \
-    /bin/bash /Miniconda3-4.5.11-Linux-x86_64.sh -f -b -p $CONDA_DIR && \
-    rm Miniconda3-4.5.11-Linux-x86_64.sh && \
+# RUN wget --quiet --no-check-certificate https://repo.continuum.io/miniconda/Miniconda3-4.5.11-Linux-x86_64.sh && \
+#     echo "e1045ee415162f944b6aebfe560b8fee *Miniconda3-4.5.11-Linux-x86_64.sh" | sha256sum -c - && \
+#     /bin/bash /Miniconda3-4.5.11-Linux-x86_64.sh -f -b -p $CONDA_DIR && \
+#     rm Miniconda3-4.5.11-Linux-x86_64.sh && \
+#     echo export PATH=$CONDA_DIR/bin:'$PATH' > /etc/profile.d/conda.sh
+
+RUN wget --quiet --no-check-certificate https://repo.continuum.io/miniconda/Miniconda2-4.6.14-Linux-x86_64.sh && \
+    echo "faa7cb0b0c8986ac3cacdbbd00fe4168 *Miniconda3-4.6.14-Linux-x86_64.sh" | sha256sum -c - && \
+    /bin/bash /Miniconda3-4.6.14-Linux-x86_64.sh -f -b -p $CONDA_DIR && \
+    rm Miniconda3-4.6.14-Linux-x86_64.sh && \
     echo export PATH=$CONDA_DIR/bin:'$PATH' > /etc/profile.d/conda.sh
 
 # ENV NB_USER koitaroh
