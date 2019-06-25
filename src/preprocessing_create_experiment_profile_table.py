@@ -8,15 +8,12 @@ import time
 import random
 import gensim
 from gensim.models.doc2vec import Doc2Vec, TaggedDocument
-import folium
 import sqlalchemy
-# import tables
 import pickle
 from pathlib import Path
 from collections import OrderedDict
 import numpy as np
 import pandas as pd
-import shapely
 import geopandas as gpd
 from datetime import datetime, timedelta, time, date
 from geopy.distance import vincenty, great_circle
