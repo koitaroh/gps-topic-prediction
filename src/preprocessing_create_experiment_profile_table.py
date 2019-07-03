@@ -51,6 +51,85 @@ def nearest(items, pivot):
     return min(items, key=lambda x: abs(x - pivot))
 
 
+def create_profile_table(EXPERIMENT_PARAMETERS, conn):
+    sql = f"""
+        CREATE table {EXPERIMENT_PARAMETERS['EXPERIMENT_NAME']}_profile as
+        SELECT uid
+        FROM gps_interpolated
+        where (latitude between {EXPERIMENT_PARAMETERS['AOI'][1]} and {EXPERIMENT_PARAMETERS['AOI'][3]})
+        and (longitude between {EXPERIMENT_PARAMETERS['AOI'][0]} and {EXPERIMENT_PARAMETERS['AOI'][2]})
+        and timestamp_from between '{EXPERIMENT_PARAMETERS['TRAINING_OBSERVATION_START']}' and '{EXPERIMENT_PARAMETERS['TRAINING_PREDICTION_END']}'
+        GROUP BY uid
+    """
+    conn.execute(sql)
+
+    sql = f"""
+        ALTER TABLE {EXPERIMENT_PARAMETERS['EXPERIMENT_NAME']}_profile
+        ADD obs_s_lon double precision,
+        ADD obs_s_lat double precision,
+        ADD obs_e_lon double precision,
+        ADD obs_e_lat double precision,
+        ADD pred_s_lon double precision,
+        ADD pred_s_lat double precision,
+        ADD pred_e_lon double precision,
+        ADD pred_e_lat double precision,
+        ADD obs_s_jpgrid text,
+        ADD obs_e_jpgrid text,
+        ADD pred_s_jpgrid text,
+        ADD pred_e_jpgrid text,
+        ADD preprocessing integer
+    """
+    conn.execute(sql)
+    return None
+
+
+def update_profile_table(EXPERIMENT_PARAMETERS, conn):
+    sql = f"""
+        select uid from {EXPERIMENT_PARAMETERS['EXPERIMENT_NAME']}_profile where obs_s_lon is NULL
+        limit 10000
+    """
+    uid_df = pd.read_sql_query(sql, conn)
+    for index, row in tqdm(uid_df.iterrows()):
+        # print(row['uid'])
+        uid = int(row['uid'])
+        sql = f"""
+            SELECT uid, timestamp_from, latitude, longitude
+            FROM gps_interpolated
+            where uid = {uid}
+            and (latitude between {EXPERIMENT_PARAMETERS['AOI'][1]} and {EXPERIMENT_PARAMETERS['AOI'][3]})
+            and (longitude between {EXPERIMENT_PARAMETERS['AOI'][0]} and {EXPERIMENT_PARAMETERS['AOI'][2]})
+            and timestamp_from between '{EXPERIMENT_PARAMETERS['TRAINING_OBSERVATION_START']}' and '{EXPERIMENT_PARAMETERS['TRAINING_PREDICTION_END']}'
+        """
+        gps_gdf = pd.read_sql_query(sql, conn, parse_dates=['timestamp_from'])
+        # # gps_gdf = gpd.GeoDataFrame(gps_gdf, geometry=gpd.points_from_xy(gps_gdf.longitude, gps_gdf.latitude)) # For geopandas 0.5.0 or later
+        gps_gdf = gpd.GeoDataFrame(gps_gdf, geometry=[Point(x, y) for x, y in zip(gps_gdf.longitude, gps_gdf.latitude)]) # For geopandas 0.4.0
+        gps_gdf = gps_gdf.drop_duplicates(subset='timestamp_from', keep='first')
+        gps_gdf.set_index('timestamp_from', inplace=True)
+        gps_gdf = gps_gdf.sort_index()
+        point_observation_start = gps_gdf.iloc[gps_gdf.index.get_loc(dt_observation_start, method='nearest')]
+        point_observation_end = gps_gdf.iloc[gps_gdf.index.get_loc(dt_observation_end, method='nearest')]
+        point_prediction_start = gps_gdf.iloc[gps_gdf.index.get_loc(dt_prediction_start, method='nearest')]
+        point_prediction_end = gps_gdf.iloc[gps_gdf.index.get_loc(dt_prediction_end, method='nearest')]
+        table_profile = sqlalchemy.Table(f"{EXPERIMENT_PARAMETERS['EXPERIMENT_NAME']}_profile", metadata, autoload=True, autoload_with=engine)
+        query = table_profile.update()\
+            .values(
+            obs_s_lon=point_observation_start['longitude'],
+            obs_s_lat=point_observation_start['latitude'],
+            obs_e_lon=point_observation_end['longitude'],
+            obs_e_lat=point_observation_end['latitude'],
+            pred_s_lon=point_prediction_start['longitude'],
+            pred_s_lat=point_prediction_start['latitude'],
+            pred_e_lon=point_prediction_end['longitude'],
+            pred_e_lat=point_prediction_end['latitude'],
+            obs_s_jpgrid=jpgrid.encodeBase(point_observation_start['latitude'],point_observation_start['longitude']),
+            obs_e_jpgrid=jpgrid.encodeBase(point_observation_end['latitude'],point_observation_end['longitude']),
+            pred_s_jpgrid=jpgrid.encodeBase(point_prediction_start['latitude'], point_prediction_start['longitude']),
+            pred_e_jpgrid=jpgrid.encodeBase(point_prediction_end['latitude'], point_prediction_end['longitude']))\
+            .where(table_profile.c.uid == uid)
+        conn.execute(query)
+    return None
+
+
 if __name__ == '__main__':
     EXPERIMENT_PARAMETERS = s.EXPERIMENT_PARAMETERS
     EXPERIMENT_ENVIRONMENT = s.EXPERIMENT_ENVIRONMENT
@@ -64,53 +143,12 @@ if __name__ == '__main__':
 
     if EXPERIMENT_ENVIRONMENT == "remote":
         engine, conn, metadata = utility_database.establish_db_connection_postgresql_geotweet_remote()
-    if EXPERIMENT_ENVIRONMENT == "local":
+    elif EXPERIMENT_ENVIRONMENT == "local":
         engine, conn, metadata = utility_database.establish_db_connection_postgresql_geotweet_ssh()
 
-    profile_list = []
+    # create_profile_table(EXPERIMENT_PARAMETERS, conn)
+    update_profile_table(EXPERIMENT_PARAMETERS, conn)
 
-    sql = f"""
-        SELECT uid, timestamp_from, latitude, longitude
-        FROM gps_interpolated
-        where (latitude between {EXPERIMENT_PARAMETERS['AOI'][1]} and {EXPERIMENT_PARAMETERS['AOI'][3]}) 
-        and (longitude between {EXPERIMENT_PARAMETERS['AOI'][0]} and {EXPERIMENT_PARAMETERS['AOI'][2]})
-        and timestamp_from between '{EXPERIMENT_PARAMETERS['TRAINING_OBSERVATION_START']}' and '{EXPERIMENT_PARAMETERS['TRAINING_PREDICTION_END']}'
-        limit 100000000
-    """
-
-    gps_gdf = pd.read_sql_query(sql, conn, parse_dates=['timestamp_from'])
-    # gps_gdf = gpd.GeoDataFrame(gps_gdf, geometry=gpd.points_from_xy(gps_gdf.longitude, gps_gdf.latitude)) # For geopandas 0.5.0 or later
-    gps_gdf = gpd.GeoDataFrame(gps_gdf, geometry=[Point(x, y) for x, y in zip(gps_gdf.longitude, gps_gdf.latitude)]) # For geopandas 0.4.0
-
-    gps_gdf_group = gps_gdf.groupby("uid", as_index=False)
-    for name, group in tqdm(gps_gdf_group):
-        group = group.drop_duplicates(subset='timestamp_from', keep='first')
-        group.set_index('timestamp_from', inplace=True)
-        group = group.sort_index()
-        point_observation_start = group.iloc[group.index.get_loc(dt_observation_start, method='nearest')]
-        point_observation_end = group.iloc[group.index.get_loc(dt_observation_end, method='nearest')]
-        point_prediction_start = group.iloc[group.index.get_loc(dt_prediction_start, method='nearest')]
-        point_prediction_end = group.iloc[group.index.get_loc(dt_prediction_end, method='nearest')]
-        profile_list.append({'uid': name,
-                             'obs_s_lon': point_observation_start['longitude'],
-                             'obs_s_lat': point_observation_start['latitude'],
-                             'obs_e_lon': point_observation_end['longitude'],
-                             'obs_e_lat': point_observation_end['latitude'],
-                             'pred_s_lon': point_prediction_start['longitude'],
-                             'pred_s_lat': point_prediction_start['latitude'],
-                             'pred_e_lon': point_prediction_end['longitude'],
-                             'pred_e_lat': point_prediction_end['latitude'],
-                             'obs_s_jpgrid': jpgrid.encodeBase(point_observation_start['latitude'],
-                                                               point_observation_start['longitude']),
-                             'obs_e_jpgrid': jpgrid.encodeBase(point_observation_end['latitude'],
-                                                               point_observation_end['longitude']),
-                             'pred_s_jpgrid': jpgrid.encodeBase(point_prediction_start['latitude'],
-                                                                point_prediction_start['longitude']),
-                             'pred_e_jpgrid': jpgrid.encodeBase(point_prediction_end['latitude'],
-                                                                point_prediction_end['longitude'])})
-    profile_df = pd.DataFrame(profile_list)
-    # print(profile_df)
-    profile_df.to_sql(EXPERIMENT_PARAMETERS['EXPERIMENT_NAME'], engine, if_exists='replace')
 
     # Make notification
     slack_client.api_call("chat.postMessage", channel="#experiment", text=__file__ + " is finished.")

@@ -45,7 +45,7 @@ SCENARIO = 'usual'
 #####################################################################################
 if EXPERIMENT_ENVIRONMENT == "local":
     EXPERIMENT_PARAMETERS = {
-        'EXPERIMENT_NAME': "Experiment_local_fireworks_20180926_1550",
+        'EXPERIMENT_NAME': "experiment_local_fireworks_20180926_1550",
         # 'TIMESTART' : "2012-07-19 00:00:00",
         # 'TIMEEND' : "2012-07-25 23:59:59",
         'AOI' : [138.72, 34.9, 140.87, 36.28],
@@ -122,7 +122,7 @@ if EXPERIMENT_ENVIRONMENT == "local":
 #################################################################
 if EXPERIMENT_ENVIRONMENT == "remote":
     EXPERIMENT_PARAMETERS = {
-        'EXPERIMENT_NAME': "Experiment_usual_20181129_1235",
+        'EXPERIMENT_NAME': "experiment_usual_20181129_1235",
         # 'EXPERIMENT_NAME': "Experiment_20120725_20120725_5mins_25000users_2h_2layers",
         # 'TIMESTART' : "2012-07-19 00:00:00",
         # 'TIMEEND' : "2012-07-25 23:59:59",

@@ -9,7 +9,7 @@ import time
 import random
 import sqlalchemy
 import pandas
-import tables
+# import tables
 import pickle
 import numpy
 import numpy as np
