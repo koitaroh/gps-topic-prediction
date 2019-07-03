@@ -51,9 +51,9 @@ def nearest(items, pivot):
     return min(items, key=lambda x: abs(x - pivot))
 
 
-def create_profile_table(EXPERIMENT_PARAMETERS, conn):
+def create_profile_table(EXPERIMENT_PARAMETERS, SCENARIO, conn):
     sql = f"""
-        CREATE table {EXPERIMENT_PARAMETERS['EXPERIMENT_NAME']}_profile as
+        CREATE table gps_topic_prediction_profile_{SCENARIO}_profile as
         SELECT uid
         FROM gps_interpolated
         where (latitude between {EXPERIMENT_PARAMETERS['AOI'][1]} and {EXPERIMENT_PARAMETERS['AOI'][3]})
@@ -64,7 +64,7 @@ def create_profile_table(EXPERIMENT_PARAMETERS, conn):
     conn.execute(sql)
 
     sql = f"""
-        ALTER TABLE {EXPERIMENT_PARAMETERS['EXPERIMENT_NAME']}_profile
+        ALTER TABLE gps_topic_prediction_profile_{SCENARIO}_profile
         ADD obs_s_lon double precision,
         ADD obs_s_lat double precision,
         ADD obs_e_lon double precision,
@@ -83,9 +83,9 @@ def create_profile_table(EXPERIMENT_PARAMETERS, conn):
     return None
 
 
-def update_profile_table(EXPERIMENT_PARAMETERS, conn):
+def update_profile_table(EXPERIMENT_PARAMETERS, SCENARIO, conn):
     sql = f"""
-        select uid from {EXPERIMENT_PARAMETERS['EXPERIMENT_NAME']}_profile where obs_s_lon is NULL
+        select uid from gps_topic_prediction_profile_{SCENARIO}_profile where obs_s_lon is NULL
         limit 10000
     """
     uid_df = pd.read_sql_query(sql, conn)
@@ -110,7 +110,7 @@ def update_profile_table(EXPERIMENT_PARAMETERS, conn):
         point_observation_end = gps_gdf.iloc[gps_gdf.index.get_loc(dt_observation_end, method='nearest')]
         point_prediction_start = gps_gdf.iloc[gps_gdf.index.get_loc(dt_prediction_start, method='nearest')]
         point_prediction_end = gps_gdf.iloc[gps_gdf.index.get_loc(dt_prediction_end, method='nearest')]
-        table_profile = sqlalchemy.Table(f"{EXPERIMENT_PARAMETERS['EXPERIMENT_NAME']}_profile", metadata, autoload=True, autoload_with=engine)
+        table_profile = sqlalchemy.Table(f"gps_topic_prediction_profile_{SCENARIO}_profile", metadata, autoload=True, autoload_with=engine)
         query = table_profile.update()\
             .values(
             obs_s_lon=point_observation_start['longitude'],
@@ -133,6 +133,8 @@ def update_profile_table(EXPERIMENT_PARAMETERS, conn):
 if __name__ == '__main__':
     EXPERIMENT_PARAMETERS = s.EXPERIMENT_PARAMETERS
     EXPERIMENT_ENVIRONMENT = s.EXPERIMENT_ENVIRONMENT
+    SCENARIO = s.SCENARIO
+
 
     dt_observation_start = pd.to_datetime(EXPERIMENT_PARAMETERS['TRAINING_OBSERVATION_START'])
     dt_observation_end = pd.to_datetime(EXPERIMENT_PARAMETERS['TRAINING_OBSERVATION_END'])
@@ -146,8 +148,8 @@ if __name__ == '__main__':
     elif EXPERIMENT_ENVIRONMENT == "local":
         engine, conn, metadata = utility_database.establish_db_connection_postgresql_geotweet_ssh()
 
-    # create_profile_table(EXPERIMENT_PARAMETERS, conn)
-    update_profile_table(EXPERIMENT_PARAMETERS, conn)
+    create_profile_table(EXPERIMENT_PARAMETERS, SCENARIO, conn)
+    update_profile_table(EXPERIMENT_PARAMETERS, SCENARIO, conn)
 
 
     # Make notification
