@@ -53,7 +53,7 @@ def nearest(items, pivot):
 
 def create_profile_table(EXPERIMENT_PARAMETERS, SCENARIO, conn):
     sql = f"""
-        CREATE table gps_topic_prediction_profile_{SCENARIO}_profile as
+        CREATE table gps_topic_prediction_profile_{SCENARIO} as
         SELECT uid
         FROM gps_interpolated
         where (latitude between {EXPERIMENT_PARAMETERS['AOI'][1]} and {EXPERIMENT_PARAMETERS['AOI'][3]})
@@ -64,7 +64,7 @@ def create_profile_table(EXPERIMENT_PARAMETERS, SCENARIO, conn):
     conn.execute(sql)
 
     sql = f"""
-        ALTER TABLE gps_topic_prediction_profile_{SCENARIO}_profile
+        ALTER TABLE gps_topic_prediction_profile_{SCENARIO}
         ADD obs_s_lon double precision,
         ADD obs_s_lat double precision,
         ADD obs_e_lon double precision,
@@ -85,9 +85,9 @@ def create_profile_table(EXPERIMENT_PARAMETERS, SCENARIO, conn):
 
 def update_profile_table(EXPERIMENT_PARAMETERS, SCENARIO, conn):
     sql = f"""
-        select uid from gps_topic_prediction_profile_{SCENARIO}_profile where obs_s_lon is NULL
-        limit 10000
+        select uid from gps_topic_prediction_profile_{SCENARIO} where obs_s_lon is NULL
     """
+    # limit 1000 for prototyping
     uid_df = pd.read_sql_query(sql, conn)
     for index, row in tqdm(uid_df.iterrows()):
         # print(row['uid'])
@@ -110,7 +110,7 @@ def update_profile_table(EXPERIMENT_PARAMETERS, SCENARIO, conn):
         point_observation_end = gps_gdf.iloc[gps_gdf.index.get_loc(dt_observation_end, method='nearest')]
         point_prediction_start = gps_gdf.iloc[gps_gdf.index.get_loc(dt_prediction_start, method='nearest')]
         point_prediction_end = gps_gdf.iloc[gps_gdf.index.get_loc(dt_prediction_end, method='nearest')]
-        table_profile = sqlalchemy.Table(f"gps_topic_prediction_profile_{SCENARIO}_profile", metadata, autoload=True, autoload_with=engine)
+        table_profile = sqlalchemy.Table(f"gps_topic_prediction_profile_{SCENARIO}", metadata, autoload=True, autoload_with=engine)
         query = table_profile.update()\
             .values(
             obs_s_lon=point_observation_start['longitude'],
