@@ -1,6 +1,4 @@
-ARG cuda_version=9.0
-ARG cudnn_version=7
-FROM nvidia/cuda:${cuda_version}-cudnn${cudnn_version}-devel
+# Configure Nvidia-docker
 
 ARG IMAGE_NAME
 FROM ${IMAGE_NAME}:10.0-runtime-ubuntu18.04
@@ -16,6 +14,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 ENV LIBRARY_PATH /usr/local/cuda/lib64/stubs
 
+# Start custom configureation
 
 MAINTAINER Satoshi Miyazawa <koitaroh@gmail.com>
 
