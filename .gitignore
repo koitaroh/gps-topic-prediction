@@ -1,0 +1,9 @@
+# Personal .gitignore
+.idea/
+.vscode/
+*.cfg
+*.pyc
+# *.log*
+*\.DS_Store
+/data
+/output

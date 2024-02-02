@@ -1,0 +1,51 @@
+name: prediction
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - dask
+  - distributed
+  - dvc
+  - pydrive
+  - fiona
+  - gensim
+  - geojson
+  - geopandas
+  - geopy
+  - google-api-python-client
+  - h5py
+  - jupyter_client
+  - jupyter_core
+  - matplotlib
+  - seaborn
+  - plotly
+  - plotly-orca
+  - notebook
+  - numpy
+  - openssl
+  - pandas
+  - pillow
+  - postgresql
+  - psycopg2
+  - pyemd
+  - pymysql
+  - pyopenssl
+  - python
+  - requests
+  - scikit-learn
+  - scipy
+  - shapely
+  - slackclient
+  - smart_open
+  - sqlalchemy
+  - sshtunnel
+  - swifter
+  - tqdm
+  - tensorflow-gpu
+  - keras
+  - pip:
+    - google-api-core
+    - googleapis-common-protos
+    - tables
+    - tensorflow
+
