@@ -189,44 +189,12 @@ def create_model_lstm_grid_mode_topic(input_shape, input_mode_shape, input_topic
 
     lstm_input = Concatenate()([x_input_embedding, x_mode_input, x_topic_input])
 
-    # attention
-    # LSTMレイヤー
     lstm_1 = LSTM(hidden_neurons, return_sequences=True, activation='tanh', name='lstm-1')(lstm_input)
     lstm_2 = LSTM(hidden_neurons, return_sequences=True, activation='tanh', name='lstm-2')(lstm_1)
     lstm_3 = LSTM(hidden_neurons, return_sequences=True, activation='tanh', name='lstm-3')(lstm_2)
     attention_output = Attention()([lstm_3, lstm_3])
     lstm_4 = LSTM(hidden_neurons, return_sequences=False, activation='tanh', name='lstm-4')(attention_output)
     main_output = Dense(max_s_index, name='dense-1', activation='softmax')(lstm_4)
-
-    # 4層のGRUレイヤー
-    # gru_1 = GRU(hidden_neurons, return_sequences=True, activation='tanh', name='gru-1')(lstm_input)
-    # gru_2 = GRU(hidden_neurons, return_sequences=True, activation='tanh', name='gru-2')(gru_1)
-    # gru_3 = GRU(hidden_neurons, return_sequences=True, activation='tanh', name='gru-3')(gru_2)
-    # gru_4 = GRU(hidden_neurons, return_sequences=True, activation='tanh', name='gru-4')(gru_3)
-    # attention_output = Attention()([gru_4, gru_4])
-    # main_output = Dense(max_s_index, name='dense-1', activation='softmax')(attention_output)
-
-    # # Two layer
-    # # dropout=0.2, recurrent_dropout=0.2, force activation to tanh instead of softsign for using cuDNN.
-    # lstm_1 = LSTM(hidden_neurons, return_sequences=True, activation='tanh', name='lstm-1')(lstm_input)
-    # lstm_2 = LSTM(hidden_neurons, return_sequences=False, activation='tanh', name='lstm-2')(lstm_1)
-    # main_output = Dense(max_s_index, name='dense-1', activation='softmax')(lstm_2)
-
-    # Four layers
-    # lstm_1 = LSTM(hidden_neurons, return_sequences=True, dropout=0.2, recurrent_dropout=0.2, name='lstm-1')(lstm_input)
-    # lstm_2 = LSTM(hidden_neurons, return_sequences=True, dropout=0.2, recurrent_dropout=0.2, name='lstm-2')(lstm_1)
-    # lstm_3 = LSTM(hidden_neurons, return_sequences=True, dropout=0.2, recurrent_dropout=0.2, name='lstm-3')(lstm_2)
-    # lstm_4 = LSTM(hidden_neurons, return_sequences=False, dropout=0.2, recurrent_dropout=0.2, name='lstm-4')(lstm_3)
-    # main_output = Dense(max_s_index, name='dense-1', activation='softmax')(lstm_4)
-
-    # Six layers
-    # lstm_1 = LSTM(hidden_neurons, return_sequences=True, dropout=0.2, recurrent_dropout=0.2, name='lstm-1')(lstm_input)
-    # lstm_2 = LSTM(hidden_neurons, return_sequences=True, dropout=0.2, recurrent_dropout=0.2, name='lstm-2')(lstm_1)
-    # lstm_3 = LSTM(hidden_neurons, return_sequences=True, dropout=0.2, recurrent_dropout=0.2, name='lstm-3')(lstm_2)
-    # lstm_4 = LSTM(hidden_neurons, return_sequences=True, dropout=0.2, recurrent_dropout=0.2, name='lstm-4')(lstm_3)
-    # lstm_5 = LSTM(hidden_neurons, return_sequences=True, dropout=0.2, recurrent_dropout=0.2, name='lstm-5')(lstm_4)
-    # lstm_6 = LSTM(hidden_neurons, return_sequences=False, dropout=0.2, recurrent_dropout=0.2, name='lstm-6')(lstm_5)
-    # main_output = Dense(max_s_index, name='dense-1', activation='softmax')(lstm_6)
 
     model = Model(inputs=[x_input, x_mode_input, x_topic_input], outputs=[main_output])
     model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy', 'sparse_top_k_categorical_accuracy'])

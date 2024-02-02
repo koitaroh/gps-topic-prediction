@@ -160,12 +160,7 @@ def create_model_lstm_grid(input_shape, max_s_index):
 
     lstm_input = x_input_embedding
 
-    # Two layers 
-    # lstm_1 = LSTM(hidden_neurons, return_sequences=True, dropout=0.2, recurrent_dropout=0.2, activation='softsign', name='lstm-1')(lstm_input)
-    # lstm_2 = LSTM(hidden_neurons, return_sequences=False, dropout=0.2, recurrent_dropout=0.2, activation='softsign', name='lstm-2')(lstm_1)
-    # main_output = Dense(max_s_index, name='dense-1', activation='softmax')(lstm_2)
-
-    # DeepMove
+    
     lstm_1 = LSTM(hidden_neurons, return_sequences=True, activation='tanh', name='lstm-1')(lstm_input)
     lstm_2 = LSTM(hidden_neurons, return_sequences=True, activation='tanh', name='lstm-2')(lstm_1)
     lstm_3 = LSTM(hidden_neurons, return_sequences=True, activation='tanh', name='lstm-3')(lstm_2)
@@ -173,21 +168,7 @@ def create_model_lstm_grid(input_shape, max_s_index):
     lstm_4 = LSTM(hidden_neurons, return_sequences=False, activation='tanh', name='lstm-4')(attention_output)
     main_output = Dense(max_s_index, name='dense-1', activation='softmax')(lstm_4)
 
-    # Four layers
-    # lstm_1 = LSTM(hidden_neurons, return_sequences=True, dropout=0.2, recurrent_dropout=0.2, name='lstm-1')(lstm_input)
-    # lstm_2 = LSTM(hidden_neurons, return_sequences=True, dropout=0.2, recurrent_dropout=0.2, name='lstm-2')(lstm_1)
-    # lstm_3 = LSTM(hidden_neurons, return_sequences=True, dropout=0.2, recurrent_dropout=0.2, name='lstm-3')(lstm_2)
-    # lstm_4 = LSTM(hidden_neurons, return_sequences=False, dropout=0.2, recurrent_dropout=0.2, name='lstm-4')(lstm_3)
-    # main_output = Dense(max_s_index, name='dense-1', activation='softmax')(lstm_4)
-
-    # Six layers
-    # lstm_1 = LSTM(hidden_neurons, return_sequences=True, dropout=0.2, recurrent_dropout=0.2, name='lstm-1')(lstm_input)
-    # lstm_2 = LSTM(hidden_neurons, return_sequences=True, dropout=0.2, recurrent_dropout=0.2, name='lstm-2')(lstm_1)
-    # lstm_3 = LSTM(hidden_neurons, return_sequences=True, dropout=0.2, recurrent_dropout=0.2, name='lstm-3')(lstm_2)
-    # lstm_4 = LSTM(hidden_neurons, return_sequences=True, dropout=0.2, recurrent_dropout=0.2, name='lstm-4')(lstm_3)
-    # lstm_5 = LSTM(hidden_neurons, return_sequences=True, dropout=0.2, recurrent_dropout=0.2, name='lstm-5')(lstm_4)
-    # lstm_6 = LSTM(hidden_neurons, return_sequences=False, dropout=0.2, recurrent_dropout=0.2, name='lstm-6')(lstm_5)
-    # main_output = Dense(max_s_index, name='dense-1', activation='softmax')(lstm_6)
+    
 
     model = Model(inputs=[x_input], outputs=[main_output])
     model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy', 'sparse_top_k_categorical_accuracy'])
